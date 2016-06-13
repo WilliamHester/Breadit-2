@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="primaryText">#F0F0F0</color>
+    <color name="secondaryText">#A0A0A0</color>
+    <color name="infoText">#6A98AF</color>
+
+    <color name="nsfw">#BF3F3F</color>
+
+    <color name="background">#202020</color>
 </resources>

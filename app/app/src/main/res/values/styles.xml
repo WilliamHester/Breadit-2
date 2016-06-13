@@ -6,6 +6,24 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="SecondaryText" parent="AppTheme">
+        <item name="android:textColor">@color/secondaryText</item>
+    </style>
+
+    <style name="InfoText" parent="AppTheme">
+        <item name="android:textColor">@color/infoText</item>
+    </style>
+
+    <style name="PrimaryText" parent="AppTheme">
+        <item name="android:textColor">@color/primaryText</item>
+    </style>
+
+    <style name="TitleText" parent="PrimaryText">
+        <item name="android:textSize">@dimen/title_text</item>
     </style>
 
 </resources>
