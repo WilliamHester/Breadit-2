@@ -55,8 +55,8 @@ public class ApiModule {
 
   @Provides
   @Singleton
-  RedditApi provideRedditApi(OkHttpClient client, JsonParser parser) {
-    return new RedditApi(client, parser);
+  RedditApi provideRedditApi(OkHttpClient client, JsonParser parser, Gson gson) {
+    return new RedditApi(client, parser, gson);
   }
 
 }

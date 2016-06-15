@@ -2,16 +2,20 @@ package williamhester.me.breadit2;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,13 +28,16 @@ public class RedditApi {
   private OkHttpClient mClient;
   private JsonParser mJsonParser;
   private AccountManager mAccountManager;
+  private Gson mGson;
 
-  public RedditApi(OkHttpClient client, JsonParser jsonParser) {
+  public RedditApi(OkHttpClient client, JsonParser jsonParser, Gson gson) {
     mClient = client;
     mJsonParser = jsonParser;
+    mGson = gson;
   }
 
-  public void getSubmissions() {
+  public void getSubmissions(String place, String query, String after,
+      DataCallback<List<Submission>> callback) {
 
   }
 
@@ -41,21 +48,34 @@ public class RedditApi {
     private String mPath;
     private boolean mAttemptedRefresh;
     private JsonCallback mCallback;
+    private HttpUrl mUrl;
 
-    RedditRequest(String path) {
-      mPath = path;
+    private RedditRequest() { }
+
+    static RedditRequest get(String path, Map<String, String> queries) {
+      HttpUrl.Builder urlBuilder = HttpUrl.parse(getBaseUrl())
+          .newBuilder()
+          .addPathSegments(mPath);
+      return null;
+    }
+
+    RedditRequest() {
     }
 
     public void getJson() {
+
+      for ()
+
       Request request = new Request.Builder()
-          .url(getBaseUrl() + mPath)
+          .url(url)
           .headers(getHeaders())
+          .method(mMethod, RequestBody)
           .build();
 
       mClient.newCall(request).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
-
+          mCallback.onJsonResponse(null);
         }
 
         @Override
