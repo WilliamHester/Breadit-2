@@ -21,10 +21,10 @@ public class SubmissionFragment extends VotableFragment {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    mPresenter.refreshSubmissions(new VotablePresenter.OnRefreshListener() {
+    contentPresenter.refreshSubmissions(new VotablePresenter.OnRefreshListener() {
       @Override
       public void onRefreshedVotables(boolean isNew) {
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
       }
     });
   }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import williamhester.me.breadit2.R;
-import williamhester.me.breadit2.ui.fragments.BaseFragment;
 
 /**
  * Created by william on 6/12/16.
@@ -18,7 +17,7 @@ import williamhester.me.breadit2.ui.fragments.BaseFragment;
 public abstract class ContentFragment extends BaseFragment {
 
   @BindView(R.id.recycler_view)
-  protected RecyclerView mRecyclerView;
+  protected RecyclerView recyclerView;
 
   @Nullable
   @Override
@@ -31,7 +30,7 @@ public abstract class ContentFragment extends BaseFragment {
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }
 
 }

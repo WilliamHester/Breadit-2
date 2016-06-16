@@ -7,17 +7,17 @@ import williamhester.me.breadit2.models.Account;
  */
 public class AccountManager {
 
-  private Account mAccount;
+  private Account account;
 
   public Account getAccount() {
-    return mAccount;
+    return account;
   }
 
   public void setAccount(Account account) {
-    mAccount = account;
+    this.account = account;
   }
 
   public boolean isLoggedIn() {
-    return mAccount != null;
+    return account != null;
   }
 }

@@ -11,18 +11,18 @@ import williamhester.me.breadit2.models.Submission;
  * Created by william on 6/13/16.
  */
 public class SubmissionLinkViewHolder extends SubmissionViewHolder {
-  private final TextView mLink;
+  private final TextView linkText;
 
   public SubmissionLinkViewHolder(View itemView) {
     super(itemView);
 
-    mLink = ButterKnife.findById(itemView, R.id.link_text);
+    linkText = ButterKnife.findById(itemView, R.id.link_text);
   }
 
   @Override
   public void setContent(Submission item) {
     super.setContent(item);
 
-    mLink.setText(item.getDomain());
+    linkText.setText(item.getDomain());
   }
 }

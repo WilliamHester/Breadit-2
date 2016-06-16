@@ -13,12 +13,12 @@ import williamhester.me.breadit2.models.Submission;
  * Created by william on 6/13/16.
  */
 public class SubmissionImageViewHolder extends SubmissionViewHolder {
-  private final ImageView mImage;
+  private final ImageView imageView;
 
   public SubmissionImageViewHolder(View itemView) {
     super(itemView);
 
-    mImage = ButterKnife.findById(itemView, R.id.image);
+    imageView = ButterKnife.findById(itemView, R.id.image);
   }
 
   @Override
@@ -29,6 +29,6 @@ public class SubmissionImageViewHolder extends SubmissionViewHolder {
         .load(item.getUrl())
         .centerCrop()
         .crossFade()
-        .into(mImage);
+        .into(imageView);
   }
 }

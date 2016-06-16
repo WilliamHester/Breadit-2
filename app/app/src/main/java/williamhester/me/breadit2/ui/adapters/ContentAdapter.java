@@ -24,12 +24,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
   private static final int SUBMISSION_IMAGE = 2;
   private static final int SUBMISSION_LINK = 3;
 
-  private List<Votable> mVotables;
-  private LayoutInflater mLayoutInflater;
+  private List<Votable> votables;
+  private LayoutInflater layoutInflater;
 
   public ContentAdapter(List<Votable> votables, LayoutInflater inflater) {
-    mVotables = votables;
-    mLayoutInflater = inflater;
+    this.votables = votables;
+    layoutInflater = inflater;
   }
 
   @Override
@@ -37,13 +37,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
     View v;
     switch (viewType) {
       case SUBMISSION_LINK:
-        v = mLayoutInflater.inflate(R.layout.row_submission_link, parent, false);
+        v = layoutInflater.inflate(R.layout.row_submission_link, parent, false);
         return new SubmissionLinkViewHolder(v);
       case SUBMISSION_IMAGE:
-        v = mLayoutInflater.inflate(R.layout.row_submission_image, parent, false);
+        v = layoutInflater.inflate(R.layout.row_submission_image, parent, false);
         return new SubmissionImageViewHolder(v);
       case SUBMISSION:
-        v = mLayoutInflater.inflate(R.layout.row_submission, parent, false);
+        v = layoutInflater.inflate(R.layout.row_submission, parent, false);
         return new SubmissionViewHolder(v);
       default:
         return null;
@@ -57,7 +57,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
       case SUBMISSION_LINK:
       case SUBMISSION:
         SubmissionViewHolder subViewHolder = (SubmissionViewHolder) holder;
-        subViewHolder.setContent((Submission) mVotables.get(position));
+        subViewHolder.setContent((Submission) votables.get(position));
         break;
       default:
         break;
@@ -66,12 +66,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
 
   @Override
   public int getItemCount() {
-    return mVotables.size();
+    return votables.size();
   }
 
   @Override
   public int getItemViewType(int position) {
-    Votable v = mVotables.get(position);
+    Votable v = votables.get(position);
     if (v instanceof Submission) {
       Submission sub = (Submission) v;
       if (sub.getUrl().endsWith(".png")) {

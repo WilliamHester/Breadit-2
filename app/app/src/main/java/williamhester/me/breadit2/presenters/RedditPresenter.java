@@ -12,6 +12,6 @@ import williamhester.me.breadit2.apis.RedditApi;
  */
 public abstract class RedditPresenter {
 
-  protected RedditApi mRedditApi = new RedditApi(new OkHttpClient(), new JsonParser(), new Gson(), new AccountManager());
+  protected RedditApi redditApi = new RedditApi(new OkHttpClient(), new JsonParser(), new Gson(), new AccountManager());
 
 }

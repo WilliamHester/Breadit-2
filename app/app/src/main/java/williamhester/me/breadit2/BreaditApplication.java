@@ -10,16 +10,16 @@ import williamhester.me.breadit2.inject.DaggerApiComponent;
  */
 public class BreaditApplication extends Application {
 
-  private ApiComponent mApiComponent;
+  private ApiComponent apiComponent;
 
   @Override
   public void onCreate() {
     super.onCreate();
 
-    mApiComponent = DaggerApiComponent.builder().build();
+    apiComponent = DaggerApiComponent.builder().build();
   }
 
   public ApiComponent getApiComponent() {
-    return mApiComponent;
+    return apiComponent;
   }
 }

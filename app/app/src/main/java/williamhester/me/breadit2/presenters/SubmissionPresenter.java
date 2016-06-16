@@ -19,28 +19,28 @@ public class SubmissionPresenter extends VotablePresenter {
   @Override
   public void loadMoreSubmissions(final OnLoadedMoreListener callback) {
     String after;
-    if (mVotables.size() == 0) {
+    if (votables.size() == 0) {
       after = null;
     } else {
-      after = mVotables.get(mVotables.size() - 1).getName();
+      after = votables.get(votables.size() - 1).getName();
     }
-    mRedditApi.getSubmissions("", null, after, new DataCallback<List<Submission>>() {
+    redditApi.getSubmissions("", null, after, new DataCallback<List<Submission>>() {
       @Override
       public void onResponse(List<Submission> data) {
-        int oldCount = mVotables.size();
-        mVotables.addAll(data);
-        callback.onLoadedMoreVotables(oldCount, mVotables.size());
+        int oldCount = votables.size();
+        votables.addAll(data);
+        callback.onLoadedMoreVotables(oldCount, votables.size());
       }
     });
   }
 
   @Override
   public void refreshSubmissions(final OnRefreshListener callback) {
-    mRedditApi.getSubmissions("", null, null, new DataCallback<List<Submission>>() {
+    redditApi.getSubmissions("", null, null, new DataCallback<List<Submission>>() {
       @Override
       public void onResponse(List<Submission> data) {
-        mVotables.clear();
-        mVotables.addAll(data);
+        votables.clear();
+        votables.addAll(data);
         callback.onRefreshedVotables(true);
       }
     });

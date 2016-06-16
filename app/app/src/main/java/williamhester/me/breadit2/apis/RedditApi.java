@@ -34,17 +34,17 @@ import williamhester.me.breadit2.models.SubmissionJson;
  */
 public class RedditApi {
 
-  private OkHttpClient mClient;
-  private JsonParser mJsonParser;
-  private AccountManager mAccountManager;
-  private Gson mGson;
+  private OkHttpClient httpClient;
+  private JsonParser jsonParser;
+  private AccountManager accountManager;
+  private Gson gson;
 
   public RedditApi(OkHttpClient client, JsonParser jsonParser, Gson gson,
                    AccountManager accountManager) {
-    mClient = client;
-    mJsonParser = jsonParser;
-    mAccountManager = accountManager;
-    mGson = gson;
+    httpClient = client;
+    this.jsonParser = jsonParser;
+    this.accountManager = accountManager;
+    this.gson = gson;
   }
 
   public void getSubmissions(String place, String query, String after,
@@ -60,7 +60,7 @@ public class RedditApi {
         if (object.has("data") && object.get("data").getAsJsonObject().has("children")) {
           JsonArray array = object.get("data").getAsJsonObject().get("children").getAsJsonArray();
           for (JsonElement elem : array) {
-            SubmissionJson json = mGson.fromJson(elem.getAsJsonObject().get("data"),
+            SubmissionJson json = gson.fromJson(elem.getAsJsonObject().get("data"),
                 SubmissionJson.class);
             submissions.add(new Submission(json));
           }
@@ -100,7 +100,7 @@ public class RedditApi {
     }
 
     public void getJson(final JsonCallback callback) {
-      mClient.newCall(mRequest).enqueue(new Callback() {
+      httpClient.newCall(mRequest).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
           callback.onJsonResponse(null);
@@ -116,7 +116,7 @@ public class RedditApi {
             mAttemptedRefresh = true;
           } else {
             try {
-              callback.onJsonResponse(mJsonParser.parse(response.body().charStream()));
+              callback.onJsonResponse(jsonParser.parse(response.body().charStream()));
             } catch (JsonIOException | JsonSyntaxException e) {
               Log.d("RedditApi", "Request failed", e);
             }
@@ -127,13 +127,13 @@ public class RedditApi {
     }
 
     private String getBaseUrl() {
-      return mAccountManager.isLoggedIn() ? OAUTH_URL : API_URL;
+      return accountManager.isLoggedIn() ? OAUTH_URL : API_URL;
     }
 
     private Headers getHeaders() {
       Headers.Builder builder = new Headers.Builder();
-      if (mAccountManager.isLoggedIn()) {
-        builder.add("Authorization", "bearer " + mAccountManager.getAccount().getAccessToken());
+      if (accountManager.isLoggedIn()) {
+        builder.add("Authorization", "bearer " + accountManager.getAccount().getAccessToken());
       }
       return builder.build();
     }
