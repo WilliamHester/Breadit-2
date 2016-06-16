@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,12 @@ public class RedditApi {
 
   public void getSubmissions(String place, String query, String after,
       DataCallback<List<Submission>> callback) {
+    new RedditRequest(place, new HashMap<String, String>(), new JsonCallback() {
+      @Override
+      public void onJsonResponse(JsonElement element) {
 
+      }
+    }).getJson();
   }
 
   class RedditRequest {
@@ -48,31 +54,27 @@ public class RedditApi {
     private String mPath;
     private boolean mAttemptedRefresh;
     private JsonCallback mCallback;
-    private HttpUrl mUrl;
+    private Request mRequest;
 
-    private RedditRequest() { }
-
-    static RedditRequest get(String path, Map<String, String> queries) {
+    RedditRequest(String path, Map<String, String> queries, JsonCallback callback) {
       HttpUrl.Builder urlBuilder = HttpUrl.parse(getBaseUrl())
           .newBuilder()
-          .addPathSegments(mPath);
-      return null;
-    }
+          .addPathSegments(path);
 
-    RedditRequest() {
+      for (String name : queries.keySet()) {
+        urlBuilder.addQueryParameter(name, queries.get(name));
+      }
+
+      mRequest = new Request.Builder()
+          .url(urlBuilder.build())
+          .headers(getHeaders())
+          .build();
+
+      mCallback = callback;
     }
 
     public void getJson() {
-
-      for ()
-
-      Request request = new Request.Builder()
-          .url(url)
-          .headers(getHeaders())
-          .method(mMethod, RequestBody)
-          .build();
-
-      mClient.newCall(request).enqueue(new Callback() {
+      mClient.newCall(mRequest).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
           mCallback.onJsonResponse(null);
