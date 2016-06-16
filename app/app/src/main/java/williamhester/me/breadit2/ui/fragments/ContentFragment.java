@@ -1,4 +1,4 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
+import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.ui.fragments.BaseFragment;
 
 /**
  * Created by william on 6/12/16.

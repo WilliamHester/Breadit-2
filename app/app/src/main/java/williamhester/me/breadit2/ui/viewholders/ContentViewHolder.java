@@ -1,4 +1,4 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.ui.viewholders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

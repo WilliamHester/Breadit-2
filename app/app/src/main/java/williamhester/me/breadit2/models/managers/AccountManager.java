@@ -1,4 +1,6 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.models.managers;
+
+import williamhester.me.breadit2.models.Account;
 
 /**
  * Created by william on 6/13/16.

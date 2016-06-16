@@ -1,7 +1,10 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.ui.viewholders;
 
 import android.view.View;
 import android.widget.TextView;
+import butterknife.ButterKnife;
+import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
 
 import static butterknife.ButterKnife.findById;
 
@@ -14,6 +17,6 @@ public class SubmissionLinkViewHolder extends SubmissionViewHolder {
   public SubmissionLinkViewHolder(View itemView) {
     super(itemView);
 
-    mLink = findById(itemView, R.id.link_text);
+    mLink = ButterKnife.findById(itemView, R.id.link_text);
   }
 }

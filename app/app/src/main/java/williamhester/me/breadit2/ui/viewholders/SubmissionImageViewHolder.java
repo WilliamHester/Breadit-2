@@ -1,7 +1,10 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.ui.viewholders;
 
 import android.view.View;
 import android.widget.ImageView;
+import butterknife.ButterKnife;
+import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
 
 import static butterknife.ButterKnife.findById;
 
@@ -14,6 +17,6 @@ public class SubmissionImageViewHolder extends SubmissionViewHolder {
   public SubmissionImageViewHolder(View itemView) {
     super(itemView);
 
-    mImage = findById(itemView, R.id.image);
+    mImage = ButterKnife.findById(itemView, R.id.image);
   }
 }

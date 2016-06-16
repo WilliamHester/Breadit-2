@@ -1,4 +1,4 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

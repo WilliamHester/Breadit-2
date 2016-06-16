@@ -1,14 +1,19 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.apis;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +25,9 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import williamhester.me.breadit2.models.managers.AccountManager;
+import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.models.SubmissionJson;
 
 /**
  * Created by william on 6/13/16.
@@ -31,32 +39,52 @@ public class RedditApi {
   private AccountManager mAccountManager;
   private Gson mGson;
 
-  public RedditApi(OkHttpClient client, JsonParser jsonParser, Gson gson) {
+  public RedditApi(OkHttpClient client, JsonParser jsonParser, Gson gson,
+                   AccountManager accountManager) {
     mClient = client;
     mJsonParser = jsonParser;
+    mAccountManager = accountManager;
     mGson = gson;
   }
 
   public void getSubmissions(String place, String query, String after,
-      DataCallback<List<Submission>> callback) {
-    new RedditRequest(place, new HashMap<String, String>(), new JsonCallback() {
+                             final DataCallback<List<Submission>> callback) {
+    new RedditRequest(place, new HashMap<String, String>()).getJson(new JsonCallback() {
       @Override
       public void onJsonResponse(JsonElement element) {
-
+        if (element == null) {
+          return;
+        }
+        JsonObject object = element.getAsJsonObject();
+        final List<Submission> submissions = new ArrayList<>();
+        if (object.has("data") && object.get("data").getAsJsonObject().has("children")) {
+          JsonArray array = object.get("data").getAsJsonObject().get("children").getAsJsonArray();
+          for (JsonElement elem : array) {
+            SubmissionJson json = mGson.fromJson(elem.getAsJsonObject().get("data"),
+                SubmissionJson.class);
+            submissions.add(new Submission(json));
+          }
+        } else {
+          Log.d("RedditApi", "no data available");
+        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+          @Override
+          public void run() {
+            callback.onResponse(submissions);
+          }
+        });
       }
-    }).getJson();
+    });
   }
 
   class RedditRequest {
     private static final String API_URL = "https://api.reddit.com/";
     private static final String OAUTH_URL = "https://oauth.reddit.com/";
 
-    private String mPath;
     private boolean mAttemptedRefresh;
-    private JsonCallback mCallback;
     private Request mRequest;
 
-    RedditRequest(String path, Map<String, String> queries, JsonCallback callback) {
+    RedditRequest(String path, Map<String, String> queries) {
       HttpUrl.Builder urlBuilder = HttpUrl.parse(getBaseUrl())
           .newBuilder()
           .addPathSegments(path);
@@ -69,15 +97,13 @@ public class RedditApi {
           .url(urlBuilder.build())
           .headers(getHeaders())
           .build();
-
-      mCallback = callback;
     }
 
-    public void getJson() {
+    public void getJson(final JsonCallback callback) {
       mClient.newCall(mRequest).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
-          mCallback.onJsonResponse(null);
+          callback.onJsonResponse(null);
         }
 
         @Override
@@ -90,11 +116,11 @@ public class RedditApi {
             mAttemptedRefresh = true;
           } else {
             try {
-              mCallback.onJsonResponse(mJsonParser.parse(response.body().charStream()));
+              callback.onJsonResponse(mJsonParser.parse(response.body().charStream()));
             } catch (JsonIOException | JsonSyntaxException e) {
               Log.d("RedditApi", "Request failed", e);
             }
-            mCallback.onJsonResponse(null);
+            callback.onJsonResponse(null);
           }
         }
       });

@@ -1,4 +1,4 @@
-package williamhester.me.breadit2;
+package williamhester.me.breadit2.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

@@ -13,7 +13,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import williamhester.me.breadit2.RedditApi;
+import williamhester.me.breadit2.models.managers.AccountManager;
+import williamhester.me.breadit2.apis.RedditApi;
 
 @Module
 public class ApiModule {
@@ -55,8 +56,15 @@ public class ApiModule {
 
   @Provides
   @Singleton
-  RedditApi provideRedditApi(OkHttpClient client, JsonParser parser, Gson gson) {
-    return new RedditApi(client, parser, gson);
+  AccountManager provideAccountManager() {
+    return new AccountManager();
+  }
+
+  @Provides
+  @Singleton
+  RedditApi provideRedditApi(OkHttpClient client, JsonParser parser, Gson gson,
+                             AccountManager accountManager) {
+    return new RedditApi(client, parser, gson, accountManager);
   }
 
 }

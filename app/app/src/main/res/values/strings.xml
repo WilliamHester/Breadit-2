@@ -2,4 +2,15 @@
     <string name="app_name">Breadit 2</string>
 
     <string name="nsfw">NSFW</string>
+
+    <plurals name="points">
+        <item quantity="one">%d point</item>
+        <item quantity="other">%d points</item>
+    </plurals>
+    <string name="metadata_1_line">%1$s • /r/%2$s • %3$s</string>
+    <plurals name="metadata_2_line">
+        <item quantity="one">%1$d comment %2$s</item>
+        <item quantity="other">%1$d comments %2$s</item>
+    </plurals>
+
 </resources>
