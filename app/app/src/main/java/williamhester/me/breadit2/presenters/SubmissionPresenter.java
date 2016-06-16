@@ -18,7 +18,13 @@ public class SubmissionPresenter extends VotablePresenter {
 
   @Override
   public void loadMoreSubmissions(final OnLoadedMoreListener callback) {
-    mRedditApi.getSubmissions("", null, null, new DataCallback<List<Submission>>() {
+    String after;
+    if (mVotables.size() == 0) {
+      after = null;
+    } else {
+      after = mVotables.get(mVotables.size() - 1).getName();
+    }
+    mRedditApi.getSubmissions("", null, after, new DataCallback<List<Submission>>() {
       @Override
       public void onResponse(List<Submission> data) {
         int oldCount = mVotables.size();

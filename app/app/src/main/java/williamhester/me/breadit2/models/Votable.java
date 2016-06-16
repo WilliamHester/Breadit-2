@@ -8,6 +8,12 @@ import android.os.Parcelable;
  */
 public class Votable implements Parcelable {
 
+  protected String name;
+
+  public String getName() {
+    return name;
+  }
+
   @Override
   public int describeContents() {
     return 0;

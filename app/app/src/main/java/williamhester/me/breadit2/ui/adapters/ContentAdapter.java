@@ -4,13 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
-import williamhester.me.breadit2.R;
-import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
-import williamhester.me.breadit2.models.Votable;
-import williamhester.me.breadit2.models.Submission;
 
 import java.util.List;
+
+import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.models.Votable;
+import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
+import williamhester.me.breadit2.ui.viewholders.SubmissionImageViewHolder;
+import williamhester.me.breadit2.ui.viewholders.SubmissionLinkViewHolder;
+import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
 
 /**
  * Created by william on 6/13/16.
@@ -18,6 +21,8 @@ import java.util.List;
 public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
 
   private static final int SUBMISSION = 1;
+  private static final int SUBMISSION_IMAGE = 2;
+  private static final int SUBMISSION_LINK = 3;
 
   private List<Votable> mVotables;
   private LayoutInflater mLayoutInflater;
@@ -29,13 +34,27 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
 
   @Override
   public ContentViewHolder<?> onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v = mLayoutInflater.inflate(R.layout.row_submission, parent, false);
-    return new SubmissionViewHolder(v);
+    View v;
+    switch (viewType) {
+      case SUBMISSION_LINK:
+        v = mLayoutInflater.inflate(R.layout.row_submission_link, parent, false);
+        return new SubmissionLinkViewHolder(v);
+      case SUBMISSION_IMAGE:
+        v = mLayoutInflater.inflate(R.layout.row_submission_image, parent, false);
+        return new SubmissionImageViewHolder(v);
+      case SUBMISSION:
+        v = mLayoutInflater.inflate(R.layout.row_submission, parent, false);
+        return new SubmissionViewHolder(v);
+      default:
+        return null;
+    }
   }
 
   @Override
   public void onBindViewHolder(ContentViewHolder<?> holder, int position) {
     switch (getItemViewType(position)) {
+      case SUBMISSION_IMAGE:
+      case SUBMISSION_LINK:
       case SUBMISSION:
         SubmissionViewHolder subViewHolder = (SubmissionViewHolder) holder;
         subViewHolder.setContent((Submission) mVotables.get(position));
@@ -54,6 +73,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
   public int getItemViewType(int position) {
     Votable v = mVotables.get(position);
     if (v instanceof Submission) {
+      Submission sub = (Submission) v;
+      if (sub.getUrl().endsWith(".png")) {
+        return SUBMISSION_IMAGE;
+      }
+      if (!sub.isSelf()) {
+        return SUBMISSION_LINK;
+      }
       return SUBMISSION;
     }
     return -1;

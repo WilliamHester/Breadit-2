@@ -11,7 +11,6 @@ public class Submission extends Votable {
   private String subreddit;
   private String subredditId;
   private String id;
-  private String name;
   private String author;
   private String thumbnail;
   private String permalink;
@@ -91,10 +90,6 @@ public class Submission extends Votable {
 
   public String getId() {
     return id;
-  }
-
-  public String getName() {
-    return name;
   }
 
   public String getAuthor() {
