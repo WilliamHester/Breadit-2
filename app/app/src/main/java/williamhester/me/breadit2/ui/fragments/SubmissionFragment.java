@@ -1,7 +1,7 @@
 package williamhester.me.breadit2.ui.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
 import williamhester.me.breadit2.presenters.SubmissionPresenter;
 import williamhester.me.breadit2.presenters.VotablePresenter;
 
@@ -15,18 +15,6 @@ public class SubmissionFragment extends VotableFragment {
     SubmissionFragment fragment = new SubmissionFragment();
     fragment.setArguments(args);
     return fragment;
-  }
-
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    contentPresenter.refreshSubmissions(new VotablePresenter.OnRefreshListener() {
-      @Override
-      public void onRefreshedVotables(boolean isNew) {
-        adapter.notifyDataSetChanged();
-      }
-    });
   }
 
   @Override

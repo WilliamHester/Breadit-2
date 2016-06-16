@@ -10,14 +10,36 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.presenters.VotablePresenter;
+import williamhester.me.breadit2.ui.adapters.ContentAdapter;
 
 /**
  * Created by william on 6/12/16.
  */
 public abstract class ContentFragment extends BaseFragment {
 
+  protected ContentAdapter adapter;
+
   @BindView(R.id.recycler_view)
   protected RecyclerView recyclerView;
+
+  protected LinearLayoutManager layoutManager;
+  protected VotablePresenter contentPresenter;
+  protected boolean loading;
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    contentPresenter = createPresenter();
+
+    contentPresenter.refreshSubmissions(new VotablePresenter.OnRefreshListener() {
+      @Override
+      public void onRefreshedVotables(boolean isNew) {
+        adapter.notifyDataSetChanged();
+      }
+    });
+  }
 
   @Nullable
   @Override
@@ -30,7 +52,18 @@ public abstract class ContentFragment extends BaseFragment {
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    layoutManager = new LinearLayoutManager(getActivity());
+    recyclerView.setLayoutManager(layoutManager);
+    adapter = createAdapter(savedInstanceState);
+    recyclerView.setAdapter(adapter);
   }
+
+  protected void setLoading(boolean loading) {
+    this.loading = loading;
+  }
+
+  protected abstract VotablePresenter createPresenter();
+
+  protected abstract ContentAdapter createAdapter(Bundle savedInstanceState);
 
 }

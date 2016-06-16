@@ -49,7 +49,11 @@ public class RedditApi {
 
   public void getSubmissions(String place, String query, String after,
                              final DataCallback<List<Submission>> callback) {
-    new RedditRequest(place, new HashMap<String, String>()).getJson(new JsonCallback() {
+    Map<String, String> queries = new HashMap<>();
+    if (after != null) {
+      queries.put("after", after);
+    }
+    new RedditRequest(place, queries).getJson(new JsonCallback() {
       @Override
       public void onJsonResponse(JsonElement element) {
         if (element == null) {
@@ -81,8 +85,8 @@ public class RedditApi {
     private static final String API_URL = "https://api.reddit.com/";
     private static final String OAUTH_URL = "https://oauth.reddit.com/";
 
-    private boolean mAttemptedRefresh;
-    private Request mRequest;
+    private boolean attemptedRefresh;
+    private Request request;
 
     RedditRequest(String path, Map<String, String> queries) {
       HttpUrl.Builder urlBuilder = HttpUrl.parse(getBaseUrl())
@@ -93,14 +97,14 @@ public class RedditApi {
         urlBuilder.addQueryParameter(name, queries.get(name));
       }
 
-      mRequest = new Request.Builder()
+      request = new Request.Builder()
           .url(urlBuilder.build())
           .headers(getHeaders())
           .build();
     }
 
     public void getJson(final JsonCallback callback) {
-      httpClient.newCall(mRequest).enqueue(new Callback() {
+      httpClient.newCall(request).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
           callback.onJsonResponse(null);
@@ -111,9 +115,9 @@ public class RedditApi {
           if (!response.isSuccessful()) {
             Log.d("RedditApi", response.toString());
           }
-          if (response.code() == 401 && !mAttemptedRefresh) {
+          if (response.code() == 401 && !attemptedRefresh) {
             // TODO: Refresh the token
-            mAttemptedRefresh = true;
+            attemptedRefresh = true;
           } else {
             try {
               callback.onJsonResponse(jsonParser.parse(response.body().charStream()));
