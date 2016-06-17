@@ -29,15 +29,4 @@ public class Votable implements Parcelable {
   protected Votable(Parcel in) {
   }
 
-  public static final Creator<Votable> CREATOR = new Creator<Votable>() {
-    @Override
-    public Votable createFromParcel(Parcel source) {
-      return new Votable(source);
-    }
-
-    @Override
-    public Votable[] newArray(int size) {
-      return new Votable[size];
-    }
-  };
 }

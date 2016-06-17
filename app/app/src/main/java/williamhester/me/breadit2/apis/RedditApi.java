@@ -3,6 +3,7 @@ package williamhester.me.breadit2.apis;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,9 +26,14 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import williamhester.me.breadit2.models.managers.AccountManager;
+import williamhester.me.breadit2.models.Comment;
+import williamhester.me.breadit2.models.MoreComment;
+import williamhester.me.breadit2.models.MoreCommentJson;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.models.SubmissionJson;
+import williamhester.me.breadit2.models.TextComment;
+import williamhester.me.breadit2.models.TextCommentJson;
+import williamhester.me.breadit2.models.managers.AccountManager;
 
 /**
  * Created by william on 6/13/16.
@@ -81,6 +87,66 @@ public class RedditApi {
     });
   }
 
+  public void getComments(String permalink,
+                          final DataCallback<Pair<Submission, List<Comment>>> callback) {
+    new RedditRequest(permalink, null).getJson(new JsonCallback() {
+      @Override
+      public void onJsonResponse(JsonElement element) {
+        if (element == null) {
+          return;
+        }
+        JsonArray array = element.getAsJsonArray();
+        JsonObject submissionData = array.get(0).getAsJsonObject()
+            .get("data").getAsJsonObject()
+            .get("children").getAsJsonArray()
+            .get(0).getAsJsonObject()
+            .get("data").getAsJsonObject();
+        final Submission submission =
+            new Submission(gson.fromJson(submissionData, SubmissionJson.class));
+
+        JsonArray commentsJson = array.get(1).getAsJsonObject()
+            .get("data").getAsJsonObject()
+            .get("children").getAsJsonArray();
+        final List<Comment> comments = parseCommentJson(commentsJson, 0);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+          @Override
+          public void run() {
+            callback.onResponse(new Pair<>(submission, comments));
+          }
+        });
+      }
+    });
+  }
+
+  private List<Comment> parseCommentJson(JsonArray commentsJson, int level) {
+    List<Comment> comments = new ArrayList<>();
+    for (JsonElement commentElement : commentsJson) {
+      Comment comment;
+      JsonObject jsonObject = commentElement.getAsJsonObject();
+      if (jsonObject.get("kind").getAsString().equals("more")) {
+        comment = new MoreComment(
+            gson.fromJson(jsonObject.get("data"), MoreCommentJson.class),
+            level);
+        comments.add(comment);
+      } else {
+        comment = new TextComment(
+            gson.fromJson(jsonObject.get("data"), TextCommentJson.class),
+            level);
+        JsonObject commentJson = jsonObject.get("data").getAsJsonObject();
+        JsonElement replies = commentJson.get("replies");
+        comments.add(comment);
+        if (replies.isJsonObject()) {
+          JsonArray repliesArray = replies.getAsJsonObject()
+              .get("data").getAsJsonObject()
+              .get("children").getAsJsonArray();
+          comments.addAll(parseCommentJson(repliesArray, level + 1));
+        }
+      }
+    }
+    return comments;
+  }
+
   class RedditRequest {
     private static final String API_URL = "https://api.reddit.com/";
     private static final String OAUTH_URL = "https://oauth.reddit.com/";
@@ -93,8 +159,10 @@ public class RedditApi {
           .newBuilder()
           .addPathSegments(path);
 
-      for (String name : queries.keySet()) {
-        urlBuilder.addQueryParameter(name, queries.get(name));
+      if (queries != null) {
+        for (String name : queries.keySet()) {
+          urlBuilder.addQueryParameter(name, queries.get(name));
+        }
       }
 
       request = new Request.Builder()

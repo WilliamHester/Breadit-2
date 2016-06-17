@@ -41,7 +41,7 @@ public abstract class VotablePresenter extends RedditPresenter implements Parcel
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.title);
-    dest.writeTypedList(this.votables);
+//    dest.writeTypedList(this.votables);
   }
 
   public VotablePresenter() {
@@ -49,7 +49,7 @@ public abstract class VotablePresenter extends RedditPresenter implements Parcel
 
   protected VotablePresenter(Parcel in) {
     this.title = in.readString();
-    this.votables.addAll(in.createTypedArrayList(Votable.CREATOR));
+//    this.votables.addAll(in.createTypedArrayList(Votable.CREATOR));
   }
 
 }

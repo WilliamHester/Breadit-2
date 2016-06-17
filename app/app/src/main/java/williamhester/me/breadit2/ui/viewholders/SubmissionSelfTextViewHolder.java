@@ -1,10 +1,13 @@
 package williamhester.me.breadit2.ui.viewholders;
 
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.HtmlParser;
+import williamhester.me.breadit2.ui.text.ClickableLinkMovementMethod;
 
 import static butterknife.ButterKnife.findById;
 
@@ -19,12 +22,14 @@ public class SubmissionSelfTextViewHolder extends SubmissionViewHolder {
     super(itemView);
 
     selfText = findById(itemView, R.id.self_text);
+    selfText.setMovementMethod(new ClickableLinkMovementMethod());
   }
 
   @Override
   public void setContent(Submission item) {
     super.setContent(item);
 
-
+    HtmlParser parser = new HtmlParser(Html.fromHtml(item.getSelftextHtml()).toString());
+    selfText.setText(parser.getSpannableString());
   }
 }

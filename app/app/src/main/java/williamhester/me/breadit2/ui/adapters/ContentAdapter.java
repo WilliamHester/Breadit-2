@@ -5,30 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.models.Votable;
+import williamhester.me.breadit2.models.TextComment;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionImageViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionLinkViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
+import williamhester.me.breadit2.ui.viewholders.TextCommentViewHolder;
 
 /**
  * Created by william on 6/13/16.
  */
-public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
+public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
 
   private static final int SUBMISSION = 1;
   private static final int SUBMISSION_IMAGE = 2;
   private static final int SUBMISSION_LINK = 3;
+  private static final int TEXT_COMMENT = 10;
 
-  private List<Votable> votables;
-  private LayoutInflater layoutInflater;
+  protected LayoutInflater layoutInflater;
 
-  public ContentAdapter(List<Votable> votables, LayoutInflater inflater) {
-    this.votables = votables;
+  public ContentAdapter(LayoutInflater inflater) {
     layoutInflater = inflater;
   }
 
@@ -45,6 +43,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
       case SUBMISSION:
         v = layoutInflater.inflate(R.layout.row_submission, parent, false);
         return new SubmissionViewHolder(v);
+      case TEXT_COMMENT:
+        v = layoutInflater.inflate(R.layout.row_comment, parent, false);
+        return new TextCommentViewHolder(v);
       default:
         return null;
     }
@@ -57,23 +58,24 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
       case SUBMISSION_LINK:
       case SUBMISSION:
         SubmissionViewHolder subViewHolder = (SubmissionViewHolder) holder;
-        subViewHolder.setContent((Submission) votables.get(position));
+        subViewHolder.setContent((Submission) getItemForPosition(position));
         break;
+      case TEXT_COMMENT:
+        TextCommentViewHolder textCommentViewHolder = (TextCommentViewHolder) holder;
+        textCommentViewHolder.setContent((TextComment) getItemForPosition(position));
       default:
         break;
     }
   }
 
   @Override
-  public int getItemCount() {
-    return votables.size();
-  }
+  public abstract int getItemCount();
 
   @Override
   public int getItemViewType(int position) {
-    Votable v = votables.get(position);
-    if (v instanceof Submission) {
-      Submission sub = (Submission) v;
+    Object o = getItemForPosition(position);
+    if (o instanceof Submission) {
+      Submission sub = (Submission) o;
       if (sub.getUrl().endsWith(".png")) {
         return SUBMISSION_IMAGE;
       }
@@ -82,6 +84,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
       }
       return SUBMISSION;
     }
+    if (o instanceof TextComment) {
+      return TEXT_COMMENT;
+    }
     return -1;
   }
+
+  protected abstract Object getItemForPosition(int position);
 }

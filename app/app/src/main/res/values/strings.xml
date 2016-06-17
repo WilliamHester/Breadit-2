@@ -13,4 +13,8 @@
         <item quantity="other">%1$d comments %2$s</item>
     </plurals>
 
+    <string name="comment_metadata">%1$d • %2$d</string>
+
+    <string name="load_more_comments">Load more comments…</string>
+
 </resources>

@@ -10,21 +10,22 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import williamhester.me.breadit2.R;
-import williamhester.me.breadit2.presenters.VotablePresenter;
+import williamhester.me.breadit2.presenters.RedditPresenter;
 import williamhester.me.breadit2.ui.adapters.ContentAdapter;
 
 /**
  * Created by william on 6/12/16.
  */
-public abstract class ContentFragment extends BaseFragment {
+public abstract class ContentFragment<P extends RedditPresenter, A extends ContentAdapter>
+    extends BaseFragment {
 
-  protected ContentAdapter adapter;
+  protected A adapter;
 
   @BindView(R.id.recycler_view)
   protected RecyclerView recyclerView;
 
   protected LinearLayoutManager layoutManager;
-  protected VotablePresenter contentPresenter;
+  protected P contentPresenter;
   protected boolean loading;
 
   @Override
@@ -32,13 +33,6 @@ public abstract class ContentFragment extends BaseFragment {
     super.onCreate(savedInstanceState);
 
     contentPresenter = createPresenter();
-
-    contentPresenter.refreshSubmissions(new VotablePresenter.OnRefreshListener() {
-      @Override
-      public void onRefreshedVotables(boolean isNew) {
-        adapter.notifyDataSetChanged();
-      }
-    });
   }
 
   @Nullable
@@ -62,8 +56,8 @@ public abstract class ContentFragment extends BaseFragment {
     this.loading = loading;
   }
 
-  protected abstract VotablePresenter createPresenter();
+  protected abstract P createPresenter();
 
-  protected abstract ContentAdapter createAdapter(Bundle savedInstanceState);
+  protected abstract A createAdapter(Bundle savedInstanceState);
 
 }
