@@ -3,6 +3,7 @@ package williamhester.me.breadit2.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.presenters.CommentsPresenter;
 import williamhester.me.breadit2.ui.adapters.CommentsAdapter;
 
@@ -11,8 +12,13 @@ import williamhester.me.breadit2.ui.adapters.CommentsAdapter;
  */
 public class CommentsFragment extends ContentFragment<CommentsPresenter, CommentsAdapter> {
 
-  public static CommentsFragment newInstance() {
+  private static final String PERMALINK = "permalink";
+  private static final String SUBMISSION = "submission";
+
+  public static CommentsFragment newInstance(String permalink, Submission s) {
     Bundle args = new Bundle();
+    args.putString(PERMALINK, permalink);
+    args.putParcelable(SUBMISSION, s);
     CommentsFragment fragment = new CommentsFragment();
     fragment.setArguments(args);
     return fragment;
@@ -33,12 +39,14 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
 
   @Override
   protected CommentsPresenter createPresenter() {
-    return new CommentsPresenter("");
+    String permalink = getArguments().getString(PERMALINK);
+    Submission submission = getArguments().getParcelable(SUBMISSION);
+    return new CommentsPresenter(permalink, submission);
   }
 
   @Override
   protected CommentsAdapter createAdapter(Bundle savedInstanceState) {
-    return new CommentsAdapter(getLayoutInflater(savedInstanceState), null,
-        contentPresenter.getComments());
+    return new CommentsAdapter(getLayoutInflater(savedInstanceState), clickListener.get(),
+        contentPresenter.getSubmission(), contentPresenter.getComments());
   }
 }

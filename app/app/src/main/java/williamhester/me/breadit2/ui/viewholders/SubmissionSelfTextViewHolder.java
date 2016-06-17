@@ -7,6 +7,7 @@ import android.widget.TextView;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.ui.HtmlParser;
+import williamhester.me.breadit2.ui.VotableClickListener;
 import williamhester.me.breadit2.ui.text.ClickableLinkMovementMethod;
 
 import static butterknife.ButterKnife.findById;
@@ -18,11 +19,11 @@ public class SubmissionSelfTextViewHolder extends SubmissionViewHolder {
 
   private TextView selfText;
 
-  public SubmissionSelfTextViewHolder(View itemView) {
-    super(itemView);
+  public SubmissionSelfTextViewHolder(View itemView, VotableClickListener clickListener) {
+    super(itemView, clickListener);
 
     selfText = findById(itemView, R.id.self_text);
-    selfText.setMovementMethod(new ClickableLinkMovementMethod());
+    selfText.setMovementMethod(new ClickableLinkMovementMethod(clickListener));
   }
 
   @Override

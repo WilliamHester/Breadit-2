@@ -8,6 +8,7 @@ import android.widget.TextView;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.TextComment;
 import williamhester.me.breadit2.ui.HtmlParser;
+import williamhester.me.breadit2.ui.VotableClickListener;
 
 import static butterknife.ButterKnife.findById;
 
@@ -21,8 +22,8 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
   private TextView metadata;
   private TextView body;
 
-  public TextCommentViewHolder(View itemView) {
-    super(itemView);
+  public TextCommentViewHolder(View itemView, final VotableClickListener clickListener) {
+    super(itemView, clickListener);
 
     author = findById(itemView, R.id.author);
     flair = findById(itemView, R.id.flair);

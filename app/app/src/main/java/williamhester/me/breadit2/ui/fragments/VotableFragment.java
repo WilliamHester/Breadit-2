@@ -58,7 +58,7 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
 
   @Override
   protected VotableAdapter createAdapter(Bundle savedInstanceState) {
-    return new VotableAdapter(getLayoutInflater(savedInstanceState),
+    return new VotableAdapter(getLayoutInflater(savedInstanceState), clickListener.get(),
         contentPresenter.getVotables());
   }
 }

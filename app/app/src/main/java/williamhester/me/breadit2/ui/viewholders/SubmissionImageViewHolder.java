@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.VotableClickListener;
 
 /**
  * Created by william on 6/13/16.
@@ -15,10 +16,16 @@ import williamhester.me.breadit2.models.Submission;
 public class SubmissionImageViewHolder extends SubmissionViewHolder {
   private final ImageView imageView;
 
-  public SubmissionImageViewHolder(View itemView) {
-    super(itemView);
+  public SubmissionImageViewHolder(View itemView, VotableClickListener clickListener) {
+    super(itemView, clickListener);
 
     imageView = ButterKnife.findById(itemView, R.id.image);
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // TODO: click link for submission
+      }
+    });
   }
 
   @Override

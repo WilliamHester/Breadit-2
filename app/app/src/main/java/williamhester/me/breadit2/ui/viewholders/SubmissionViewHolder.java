@@ -6,6 +6,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.VotableClickListener;
 
 import static butterknife.ButterKnife.findById;
 
@@ -13,14 +14,24 @@ import static butterknife.ButterKnife.findById;
  * Created by william on 6/13/16.
  */
 public class SubmissionViewHolder extends ContentViewHolder<Submission> {
+
   private final TextView pointsTextView;
   private final TextView nsfwTextView;
   private final TextView titleTextView;
   private final TextView metadata1TextView;
   private final TextView metadata2TextView;
 
-  public SubmissionViewHolder(View itemView) {
+  private Submission submission;
+
+  public SubmissionViewHolder(View itemView, final VotableClickListener clickListener) {
     super(itemView);
+
+    itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        clickListener.onVotableClicked(submission);
+      }
+    });
 
     pointsTextView = ButterKnife.findById(itemView, R.id.points);
     nsfwTextView = findById(itemView, R.id.nsfw);
@@ -31,6 +42,7 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
 
   @Override
   public void setContent(Submission item) {
+    submission = item;
     Resources res = itemView.getContext().getResources();
     String pointsString = res.getQuantityString(R.plurals.points, item.getScore());
     pointsTextView.setText(String.format(pointsString, item.getScore()));

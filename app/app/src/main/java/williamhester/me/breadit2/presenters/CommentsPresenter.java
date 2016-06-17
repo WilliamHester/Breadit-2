@@ -18,8 +18,9 @@ public class CommentsPresenter extends RedditPresenter {
   private final List<Comment> comments = new ArrayList<>();
   private String permalink;
 
-  public CommentsPresenter(String permalink) {
+  public CommentsPresenter(String permalink, Submission s) {
     this.permalink = permalink;
+    this.submission = s;
   }
 
   public void load(final OnCommentsLoadedListener callback) {

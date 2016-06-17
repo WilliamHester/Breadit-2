@@ -10,10 +10,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import williamhester.me.breadit2.ui.VotableClickListener;
+
 /**
  * Created by william on 6/16/16.
  */
 public class ClickableLinkMovementMethod extends LinkMovementMethod {
+
+  private final VotableClickListener clickListener;
+
+  public ClickableLinkMovementMethod(VotableClickListener clickListener) {
+    this.clickListener = clickListener;
+  }
+
   @Override
   public boolean onTouchEvent(@NonNull TextView widget, @NonNull Spannable buffer,
                               @NonNull MotionEvent event) {

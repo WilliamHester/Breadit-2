@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import java.util.List;
 
 import williamhester.me.breadit2.models.Votable;
+import williamhester.me.breadit2.ui.VotableClickListener;
 
 /**
  * Created by william on 6/16/16.
@@ -13,8 +14,9 @@ public class VotableAdapter extends ContentAdapter {
 
   protected List<Votable> votables;
 
-  public VotableAdapter(LayoutInflater inflater, List<Votable> votables) {
-    super(inflater);
+  public VotableAdapter(LayoutInflater inflater, VotableClickListener clickListener,
+                        List<Votable> votables) {
+    super(inflater, clickListener);
     this.votables = votables;
   }
 

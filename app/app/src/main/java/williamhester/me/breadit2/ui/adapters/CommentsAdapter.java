@@ -10,6 +10,7 @@ import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.models.MoreComment;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.VotableClickListener;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.MoreCommentsViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionSelfTextViewHolder;
@@ -26,8 +27,9 @@ public class CommentsAdapter extends ContentAdapter {
   private final List<Comment> comments;
   private Submission submission;
 
-  public CommentsAdapter(LayoutInflater inflater, Submission submission, List<Comment> comments) {
-    super(inflater);
+  public CommentsAdapter(LayoutInflater inflater, VotableClickListener clickListener,
+                         Submission submission, List<Comment> comments) {
+    super(inflater, clickListener);
 
     this.submission = submission;
     this.comments = comments;
@@ -43,10 +45,10 @@ public class CommentsAdapter extends ContentAdapter {
     switch (viewType) {
       case MORE_COMMENTS:
         v = layoutInflater.inflate(R.layout.row_more_comment, parent, false);
-        return new MoreCommentsViewHolder(v);
+        return new MoreCommentsViewHolder(v, clickListener.get());
       case SUBMISSION_SELF:
         v = layoutInflater.inflate(R.layout.row_submission_self, parent, false);
-        return new SubmissionSelfTextViewHolder(v);
+        return new SubmissionSelfTextViewHolder(v, clickListener.get());
       default:
         return super.onCreateViewHolder(parent, viewType);
     }

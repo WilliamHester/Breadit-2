@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
+
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.models.TextComment;
+import williamhester.me.breadit2.ui.VotableClickListener;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionImageViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionLinkViewHolder;
@@ -25,9 +28,11 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
   private static final int TEXT_COMMENT = 10;
 
   protected LayoutInflater layoutInflater;
+  protected WeakReference<VotableClickListener> clickListener;
 
-  public ContentAdapter(LayoutInflater inflater) {
+  public ContentAdapter(LayoutInflater inflater, VotableClickListener clickListener) {
     layoutInflater = inflater;
+    this.clickListener = new WeakReference<>(clickListener);
   }
 
   @Override
@@ -36,16 +41,16 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
     switch (viewType) {
       case SUBMISSION_LINK:
         v = layoutInflater.inflate(R.layout.row_submission_link, parent, false);
-        return new SubmissionLinkViewHolder(v);
+        return new SubmissionLinkViewHolder(v, clickListener.get());
       case SUBMISSION_IMAGE:
         v = layoutInflater.inflate(R.layout.row_submission_image, parent, false);
-        return new SubmissionImageViewHolder(v);
+        return new SubmissionImageViewHolder(v, clickListener.get());
       case SUBMISSION:
         v = layoutInflater.inflate(R.layout.row_submission, parent, false);
-        return new SubmissionViewHolder(v);
+        return new SubmissionViewHolder(v, clickListener.get());
       case TEXT_COMMENT:
         v = layoutInflater.inflate(R.layout.row_comment, parent, false);
-        return new TextCommentViewHolder(v);
+        return new TextCommentViewHolder(v, clickListener.get());
       default:
         return null;
     }
