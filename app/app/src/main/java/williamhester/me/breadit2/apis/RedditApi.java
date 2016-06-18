@@ -194,6 +194,7 @@ public class RedditApi {
             }
             callback.onJsonResponse(null);
           }
+          response.close();
         }
       });
     }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.presenters.VotablePresenter;
 import williamhester.me.breadit2.ui.adapters.VotableAdapter;
 
@@ -33,6 +34,22 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
     recyclerView.addOnScrollListener(new InfiniteLoadScrollListener());
   }
 
+  @Override
+  protected VotableAdapter createAdapter(Bundle savedInstanceState) {
+    return new VotableAdapter(getLayoutInflater(savedInstanceState), this,
+        contentPresenter.getVotables());
+  }
+
+  @Override
+  public void onVotableClicked(int position) {
+    clickListener.get().navigateTo(adapter.getItemForPosition(position));
+  }
+
+  @Override
+  public void onLinkClicked(Link link) {
+    clickListener.get().showLink(link);
+  }
+
   private class InfiniteLoadScrollListener extends RecyclerView.OnScrollListener {
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -54,11 +71,5 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
         });
       }
     }
-  }
-
-  @Override
-  protected VotableAdapter createAdapter(Bundle savedInstanceState) {
-    return new VotableAdapter(getLayoutInflater(savedInstanceState), clickListener.get(),
-        contentPresenter.getVotables());
   }
 }

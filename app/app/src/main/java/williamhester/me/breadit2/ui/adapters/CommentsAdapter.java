@@ -59,10 +59,12 @@ public class CommentsAdapter extends ContentAdapter {
     switch (getItemViewType(position)) {
       case MORE_COMMENTS:
         MoreCommentsViewHolder moreCommentsViewHolder = (MoreCommentsViewHolder) holder;
+        moreCommentsViewHolder.itemView.setTag(position);
         moreCommentsViewHolder.setContent((MoreComment) getItemForPosition(position));
         return;
       case SUBMISSION_SELF:
         SubmissionViewHolder submissionViewHolder = (SubmissionViewHolder) holder;
+        submissionViewHolder.itemView.setTag(position);
         submissionViewHolder.setContent(submission);
         return;
       default:
@@ -91,7 +93,7 @@ public class CommentsAdapter extends ContentAdapter {
   }
 
   @Override
-  protected Object getItemForPosition(int position) {
+  public Object getItemForPosition(int position) {
     if (position == 0 && submission != null) {
       return submission;
     }

@@ -63,10 +63,12 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
       case SUBMISSION_LINK:
       case SUBMISSION:
         SubmissionViewHolder subViewHolder = (SubmissionViewHolder) holder;
+        subViewHolder.itemView.setTag(position);
         subViewHolder.setContent((Submission) getItemForPosition(position));
         break;
       case TEXT_COMMENT:
         TextCommentViewHolder textCommentViewHolder = (TextCommentViewHolder) holder;
+        textCommentViewHolder.itemView.setTag(position);
         textCommentViewHolder.setContent((TextComment) getItemForPosition(position));
       default:
         break;
@@ -95,5 +97,5 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
     return -1;
   }
 
-  protected abstract Object getItemForPosition(int position);
+  public abstract Object getItemForPosition(int position);
 }

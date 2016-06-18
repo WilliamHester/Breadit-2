@@ -46,7 +46,13 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
         item.getScore(),
         item.getCreatedUtc()));
 
-    HtmlParser parser = new HtmlParser(Html.fromHtml(item.getBodyHtml()).toString());
-    body.setText(parser.getSpannableString());
+    if (item.isHidden()) {
+      body.setVisibility(View.GONE);
+    } else {
+      body.setVisibility(View.VISIBLE);
+      HtmlParser parser = new HtmlParser(Html.fromHtml(item.getBodyHtml()).toString());
+      body.setText(parser.getSpannableString());
+    }
+
   }
 }

@@ -2,6 +2,8 @@ package williamhester.me.breadit2.models;
 
 import android.os.Parcel;
 
+import java.util.ArrayList;
+
 /**
  * Created by william on 6/16/16.
  */
@@ -28,6 +30,7 @@ public class TextComment extends Comment {
   private boolean archived;
   private boolean scoreHidden;
   private boolean stickied;
+  private ArrayList<Comment> children;
 
   public TextComment(TextCommentJson json, int level) {
     super(level);
@@ -139,6 +142,17 @@ public class TextComment extends Comment {
     return stickied;
   }
 
+  public ArrayList<Comment> getChildren() {
+    return children;
+  }
+
+  public void setChildren(ArrayList<Comment> children) {
+    this.children = children;
+  }
+
+  public boolean isHidden() {
+    return children != null;
+  }
 
   @Override
   public int describeContents() {

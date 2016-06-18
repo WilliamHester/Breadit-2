@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.presenters.RedditPresenter;
+import williamhester.me.breadit2.ui.ContentCallbacks;
 import williamhester.me.breadit2.ui.VotableClickListener;
 import williamhester.me.breadit2.ui.adapters.ContentAdapter;
 
@@ -21,7 +22,7 @@ import williamhester.me.breadit2.ui.adapters.ContentAdapter;
  * Created by william on 6/12/16.
  */
 public abstract class ContentFragment<P extends RedditPresenter, A extends ContentAdapter>
-    extends BaseFragment {
+    extends BaseFragment implements VotableClickListener {
 
   protected A adapter;
 
@@ -32,14 +33,14 @@ public abstract class ContentFragment<P extends RedditPresenter, A extends Conte
   protected P contentPresenter;
   protected boolean loading;
 
-  protected WeakReference<VotableClickListener> clickListener;
+  protected WeakReference<ContentCallbacks> clickListener;
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    if (context instanceof VotableClickListener) {
-      clickListener = new WeakReference<>((VotableClickListener) context);
+    if (context instanceof ContentCallbacks) {
+      clickListener = new WeakReference<>((ContentCallbacks) context);
     }
   }
 

@@ -2,19 +2,19 @@ package williamhester.me.breadit2.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.models.Votable;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.ContentCallbacks;
 import williamhester.me.breadit2.ui.fragments.CommentsFragment;
 
 /**
  * Created by william on 6/17/16.
  */
-public class ContentActivity extends BaseActivity implements VotableClickListener {
+public class ContentActivity extends BaseActivity implements ContentCallbacks {
 
   public static final String TYPE_EXTRA = "type";
   public static final String VOTABLE_EXTRA = "votable";
@@ -56,12 +56,15 @@ public class ContentActivity extends BaseActivity implements VotableClickListene
   }
 
   @Override
-  public void onVotableClicked(Votable votable) {
+  public void navigateTo(Object object) {
+    if (!(object instanceof Parcelable)) {
+      return;
+    }
     Bundle args = new Bundle();
-    args.putParcelable(VOTABLE_EXTRA, votable);
+    args.putParcelable(VOTABLE_EXTRA, (Parcelable) object);
     Intent i = null;
-    if (votable instanceof Submission) {
-      Submission submission = (Submission) votable;
+    if (object instanceof Submission) {
+      Submission submission = (Submission) object;
       args.putString(TYPE_EXTRA, COMMENTS);
       args.putString(PERMALINK_EXTRA, submission.getPermalink());
       i = new Intent(this, ContentActivity.class);
@@ -70,10 +73,11 @@ public class ContentActivity extends BaseActivity implements VotableClickListene
       i.putExtras(args);
       startActivity(i);
     }
+
   }
 
   @Override
-  public void onLinkClicked(Link link) {
+  public void showLink(Link link) {
 
   }
 }

@@ -3,7 +3,15 @@ package williamhester.me.breadit2.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import williamhester.me.breadit2.models.Comment;
+import williamhester.me.breadit2.models.Link;
+import williamhester.me.breadit2.models.MoreComment;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.models.TextComment;
+import williamhester.me.breadit2.models.Votable;
 import williamhester.me.breadit2.presenters.CommentsPresenter;
 import williamhester.me.breadit2.ui.adapters.CommentsAdapter;
 
@@ -46,7 +54,64 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
 
   @Override
   protected CommentsAdapter createAdapter(Bundle savedInstanceState) {
-    return new CommentsAdapter(getLayoutInflater(savedInstanceState), clickListener.get(),
+    return new CommentsAdapter(getLayoutInflater(savedInstanceState), this,
         contentPresenter.getSubmission(), contentPresenter.getComments());
+  }
+
+  @Override
+  public void onVotableClicked(int position) {
+    Votable votable = (Votable) adapter.getItemForPosition(position);
+    if (votable instanceof TextComment) {
+      TextComment comment = (TextComment) votable;
+      if (comment.isHidden()) {
+        expandComment(position, comment);
+      } else {
+        collapseComment(position, comment);
+      }
+      return;
+    }
+    if (votable instanceof MoreComment) {
+      // TODO: Load more comments
+      return;
+    }
+  }
+
+  private void collapseComment(int position, TextComment comment) {
+    ArrayList<Comment> collapsedComments = new ArrayList<>();
+    List<Comment> comments = contentPresenter.getComments();
+
+    int start = position;
+    Comment c = comments.get(position);
+    while (c.getLevel() > comment.getLevel()) {
+      collapsedComments.add(c);
+      position++;
+      if (position < adapter.getItemCount()) {
+        c = comments.get(position);
+      } else {
+        break;
+      }
+    }
+
+    List<Comment> subList = comments.subList(start, position);
+    collapsedComments.addAll(subList);
+    subList.clear();
+    comment.setChildren(collapsedComments);
+    adapter.notifyItemChanged(start);
+    adapter.notifyItemRangeRemoved(start + 1, position - start);
+  }
+
+  private void expandComment(int position, TextComment comment) {
+    List<Comment> comments = contentPresenter.getComments().subList(position - 1, position);
+    comments.addAll(comment.getChildren());
+    int itemCount = comment.getChildren().size();
+    comment.setChildren(null);
+
+    adapter.notifyItemChanged(position);
+    adapter.notifyItemRangeInserted(position + 1, itemCount);
+  }
+
+  @Override
+  public void onLinkClicked(Link link) {
+
   }
 }

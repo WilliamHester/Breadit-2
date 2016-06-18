@@ -26,7 +26,7 @@ public class VotableAdapter extends ContentAdapter {
   }
 
   @Override
-  protected Object getItemForPosition(int position) {
+  public Object getItemForPosition(int position) {
     return votables.get(position);
   }
 }

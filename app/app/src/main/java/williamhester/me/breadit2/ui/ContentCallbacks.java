@@ -5,10 +5,10 @@ import williamhester.me.breadit2.models.Link;
 /**
  * Created by william on 6/17/16.
  */
-public interface VotableClickListener {
+public interface ContentCallbacks {
 
-  void onVotableClicked(int position);
+  void navigateTo(Object object);
 
-  void onLinkClicked(Link link);
+  void showLink(Link link);
 
 }
