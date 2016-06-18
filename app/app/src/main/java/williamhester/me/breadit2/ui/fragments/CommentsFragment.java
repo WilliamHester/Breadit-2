@@ -59,9 +59,9 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
   }
 
   @Override
-  public void onVotableClicked(int position) {
-    Votable votable = (Votable) adapter.getItemForPosition(position);
+  public void onVotableClicked(Votable votable) {
     if (votable instanceof TextComment) {
+      int position = contentPresenter.getComments().indexOf(votable) + 1;
       TextComment comment = (TextComment) votable;
       if (comment.isHidden()) {
         expandComment(position, comment);
@@ -83,9 +83,8 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
     int start = position;
     Comment c = comments.get(position);
     while (c.getLevel() > comment.getLevel()) {
-      collapsedComments.add(c);
       position++;
-      if (position < adapter.getItemCount()) {
+      if (position < comments.size()) {
         c = comments.get(position);
       } else {
         break;
@@ -98,6 +97,7 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
     comment.setChildren(collapsedComments);
     adapter.notifyItemChanged(start);
     adapter.notifyItemRangeRemoved(start + 1, position - start);
+    recyclerView.scrollToPosition(start);
   }
 
   private void expandComment(int position, TextComment comment) {

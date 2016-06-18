@@ -21,14 +21,15 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
   private final TextView metadata1TextView;
   private final TextView metadata2TextView;
 
+  private Submission submission;
+
   public SubmissionViewHolder(View itemView, final VotableClickListener clickListener) {
     super(itemView);
 
     itemView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        int position = (int) v.getTag();
-        clickListener.onVotableClicked(position);
+        clickListener.onVotableClicked(submission);
       }
     });
 
@@ -41,6 +42,7 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
 
   @Override
   public void setContent(Submission item) {
+    submission = item;
     Resources res = itemView.getContext().getResources();
     String pointsString = res.getQuantityString(R.plurals.points, item.getScore());
     pointsTextView.setText(String.format(pointsString, item.getScore()));

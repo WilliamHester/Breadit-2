@@ -75,7 +75,7 @@ public class CommentsAdapter extends ContentAdapter {
   @Override
   public int getItemViewType(int position) {
     if (position == 0 && submission != null) {
-      if (submission.isSelf()) {
+      if (submission.isSelf() && submission.getSelftextHtml() != null) {
         return SUBMISSION_SELF;
       } else {
         return super.getItemViewType(position);

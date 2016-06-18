@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import williamhester.me.breadit2.models.Link;
+import williamhester.me.breadit2.models.Votable;
 import williamhester.me.breadit2.presenters.VotablePresenter;
 import williamhester.me.breadit2.ui.adapters.VotableAdapter;
 
@@ -41,8 +42,8 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
   }
 
   @Override
-  public void onVotableClicked(int position) {
-    clickListener.get().navigateTo(adapter.getItemForPosition(position));
+  public void onVotableClicked(Votable votable) {
+    clickListener.get().navigateTo(votable);
   }
 
   @Override
