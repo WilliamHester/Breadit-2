@@ -57,6 +57,6 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
     String metadata2String = res.getQuantityString(R.plurals.metadata_2_line,
         item.getNumComments());
     metadata2TextView.setText(String.format(metadata2String, item.getNumComments(),
-        item.getCreatedUtc()));
+        calculateShortTime(item.getCreatedUtc())));
   }
 }

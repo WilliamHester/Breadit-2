@@ -44,7 +44,7 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
     flair.setText(Html.fromHtml(flairText).toString());
     metadata.setText(String.format(res.getString(R.string.comment_metadata),
         item.getScore(),
-        item.getCreatedUtc()));
+        calculateShortTime(item.getCreatedUtc())));
 
     if (item.isHidden()) {
       body.setVisibility(View.GONE);
