@@ -10,15 +10,19 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="SecondaryText" parent="AppTheme">
+    <style name="BaseText">
+        <item name="android:textSize">@dimen/body_text</item>
+    </style>
+
+    <style name="SecondaryText" parent="BaseText">
         <item name="android:textColor">@color/secondaryText</item>
     </style>
 
-    <style name="InfoText" parent="AppTheme">
+    <style name="InfoText" parent="BaseText">
         <item name="android:textColor">@color/infoText</item>
     </style>
 
-    <style name="PrimaryText" parent="AppTheme">
+    <style name="PrimaryText" parent="BaseText">
         <item name="android:textColor">@color/primaryText</item>
     </style>
 

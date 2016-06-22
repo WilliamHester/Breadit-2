@@ -9,6 +9,7 @@ import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.TextComment;
 import williamhester.me.breadit2.ui.HtmlParser;
 import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.text.ClickableLinkMovementMethod;
 
 import static butterknife.ButterKnife.findById;
 
@@ -29,6 +30,7 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
     flair = findById(itemView, R.id.flair);
     metadata = findById(itemView, R.id.metadata);
     body = findById(itemView, R.id.body);
+    body.setMovementMethod(new ClickableLinkMovementMethod(clickListener));
   }
 
   @Override
