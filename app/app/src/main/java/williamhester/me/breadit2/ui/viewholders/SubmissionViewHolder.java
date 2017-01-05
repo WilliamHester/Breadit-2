@@ -6,7 +6,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 
 import static butterknife.ButterKnife.findById;
 
@@ -23,7 +23,7 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
 
   private Submission submission;
 
-  public SubmissionViewHolder(View itemView, final VotableClickListener clickListener) {
+  public SubmissionViewHolder(View itemView, final VotableCallbacks clickListener) {
     super(itemView);
 
     itemView.setOnClickListener(new View.OnClickListener() {
@@ -58,5 +58,10 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
         item.getNumComments());
     metadata2TextView.setText(String.format(metadata2String, item.getNumComments(),
         calculateShortTime(item.getCreatedUtc())));
+  }
+
+  /** Gets the underlying content. */
+  protected Submission getContent() {
+    return submission;
   }
 }

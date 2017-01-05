@@ -2,41 +2,42 @@ package williamhester.me.breadit2.models;
 
 import android.os.Parcel;
 
-/**
- * Created by william on 6/13/16.
- */
+import static williamhester.me.breadit2.util.Util.unescapeHtml;
+
+/** The model class that holds Submission data. */
 public class Submission extends Votable {
 
-  private String domain;
-  private String subreddit;
-  private String subredditId;
-  private String id;
-  private String author;
-  private String thumbnail;
-  private String permalink;
-  private String url;
-  private String title;
-  private String postHint;
-  private String selftextHtml;
-  private String linkFlairText;
-  private String authorFlairText;
-  private String distinguished;
-//  private boolean edited;
-  private boolean archived;
-  private boolean over18;
-  private boolean hidden;
-  private boolean saved;
-  private boolean stickied;
-  private boolean isSelf;
-  private boolean locked;
-  private boolean hideScore;
-  private boolean visited;
-  private int gilded;
-  private int score;
-  private int created;
-  private int createdUtc;
-  private int numComments;
-  private int editedUtc;
+  private final String domain;
+  private final String subreddit;
+  private final String subredditId;
+  private final String id;
+  private final String author;
+  private final String thumbnail;
+  private final String permalink;
+  private final String url;
+  private final String title;
+  private final String postHint;
+  private final String selftextHtml;
+  private final String linkFlairText;
+  private final String authorFlairText;
+  private final String distinguished;
+  private final String previewUrl;
+  private final Edited edited;
+  private final boolean archived;
+  private final boolean over18;
+  private final boolean hidden;
+  private final boolean saved;
+  private final boolean stickied;
+  private final boolean isSelf;
+  private final boolean locked;
+  private final boolean hideScore;
+  private final boolean visited;
+  private final int gilded;
+  private final int score;
+  private final int created;
+  private final int createdUtc;
+  private final int numComments;
+  private final int editedUtc;
 //  private Link link;
 //  private VoteStatus voteStatus;
 
@@ -48,15 +49,20 @@ public class Submission extends Votable {
     name = json.name;
     author = json.author;
     thumbnail = json.thumbnail;
-    permalink = json.permalink;
-    url = json.url;
-    title = json.title;
+    permalink = unescapeHtml(json.permalink);
+    url = unescapeHtml(json.url);
+    title = unescapeHtml(json.title);
     postHint = json.post_hint;
-    selftextHtml = json.selftext_html;
+    selftextHtml = unescapeHtml(json.selftext_html);
     linkFlairText = json.link_flair_text;
     authorFlairText = json.author_flair_text;
     distinguished = json.distinguished;
-//    edited = json.edited;
+    if (json.preview != null) {
+      previewUrl = unescapeHtml(json.preview.images.get(0).source.url);
+    } else {
+      previewUrl = null;
+    }
+    edited = json.edited;
     archived = json.archived;
     over18 = json.over_18;
     hidden = json.hidden;
@@ -132,9 +138,13 @@ public class Submission extends Votable {
     return distinguished;
   }
 
-//  public boolean isEdited() {
-//    return edited;
-//  }
+  public String getPreviewUrl() {
+    return previewUrl;
+  }
+
+  public Edited getEdited() {
+    return edited;
+  }
 
   public boolean isArchived() {
     return archived;
@@ -219,7 +229,8 @@ public class Submission extends Votable {
     dest.writeString(this.linkFlairText);
     dest.writeString(this.authorFlairText);
     dest.writeString(this.distinguished);
-//    dest.writeByte(this.edited ? (byte) 1 : (byte) 0);
+    dest.writeString(this.previewUrl);
+    dest.writeParcelable(this.edited, 0);
     dest.writeByte(this.archived ? (byte) 1 : (byte) 0);
     dest.writeByte(this.over18 ? (byte) 1 : (byte) 0);
     dest.writeByte(this.hidden ? (byte) 1 : (byte) 0);
@@ -254,7 +265,8 @@ public class Submission extends Votable {
     this.linkFlairText = in.readString();
     this.authorFlairText = in.readString();
     this.distinguished = in.readString();
-//    this.edited = in.readByte() != 0;
+    this.previewUrl = in.readString();
+    this.edited = in.readParcelable(Edited.class.getClassLoader());
     this.archived = in.readByte() != 0;
     this.over18 = in.readByte() != 0;
     this.hidden = in.readByte() != 0;

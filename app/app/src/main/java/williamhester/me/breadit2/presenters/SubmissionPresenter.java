@@ -5,6 +5,7 @@ import android.os.Parcel;
 import java.util.List;
 
 import williamhester.me.breadit2.apis.DataCallback;
+import williamhester.me.breadit2.apis.RedditApi;
 import williamhester.me.breadit2.models.Submission;
 
 /**
@@ -12,8 +13,10 @@ import williamhester.me.breadit2.models.Submission;
  */
 public class SubmissionPresenter extends VotablePresenter {
 
-  public SubmissionPresenter() {
+  private RedditApi redditApi;
 
+  public SubmissionPresenter(RedditApi api) {
+    this.redditApi = api;
   }
 
   @Override

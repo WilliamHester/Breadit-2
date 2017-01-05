@@ -13,16 +13,14 @@ import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import williamhester.me.breadit2.R;
-import williamhester.me.breadit2.presenters.RedditPresenter;
+import williamhester.me.breadit2.apis.RedditApi;
 import williamhester.me.breadit2.ui.ContentCallbacks;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.adapters.ContentAdapter;
 
-/**
- * Created by william on 6/12/16.
- */
-public abstract class ContentFragment<P extends RedditPresenter, A extends ContentAdapter>
-    extends BaseFragment implements VotableClickListener {
+/** The base fragment for holding a list of items. */
+public abstract class ContentFragment<P, A extends ContentAdapter> extends BaseFragment
+    implements VotableCallbacks {
 
   protected A adapter;
 
@@ -48,7 +46,7 @@ public abstract class ContentFragment<P extends RedditPresenter, A extends Conte
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    contentPresenter = createPresenter();
+    contentPresenter = createPresenter(api);
   }
 
   @Nullable
@@ -72,8 +70,7 @@ public abstract class ContentFragment<P extends RedditPresenter, A extends Conte
     this.loading = loading;
   }
 
-  protected abstract P createPresenter();
+  protected abstract P createPresenter(RedditApi api);
 
   protected abstract A createAdapter(Bundle savedInstanceState);
-
 }

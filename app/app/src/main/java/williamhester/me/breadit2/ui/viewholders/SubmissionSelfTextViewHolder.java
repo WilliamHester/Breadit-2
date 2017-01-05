@@ -1,36 +1,37 @@
 package williamhester.me.breadit2.ui.viewholders;
 
-import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.ui.HtmlParser;
-import williamhester.me.breadit2.ui.VotableClickListener;
-import williamhester.me.breadit2.ui.text.ClickableLinkMovementMethod;
+import williamhester.me.breadit2.ui.VotableCallbacks;
+import williamhester.me.breadit2.ui.text.VotableMovementMethod;
 
 import static butterknife.ButterKnife.findById;
+import static williamhester.me.breadit2.util.Util.unescapeHtml;
 
-/**
- * Created by william on 6/16/16.
- */
+/** A ViewHolder for a {@link Submission} that has self text. */
 public class SubmissionSelfTextViewHolder extends SubmissionViewHolder {
 
-  private TextView selfText;
+  private final TextView selfText;
+  private final VotableMovementMethod linkMovementMethod;
 
-  public SubmissionSelfTextViewHolder(View itemView, VotableClickListener clickListener) {
+  public SubmissionSelfTextViewHolder(View itemView, VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
     selfText = findById(itemView, R.id.self_text);
-    selfText.setMovementMethod(new ClickableLinkMovementMethod(clickListener));
+    linkMovementMethod = new VotableMovementMethod(clickListener);
+    selfText.setMovementMethod(linkMovementMethod);
   }
 
   @Override
   public void setContent(Submission item) {
     super.setContent(item);
 
-    HtmlParser parser = new HtmlParser(Html.fromHtml(item.getSelftextHtml()).toString());
+    linkMovementMethod.setVotable(item);
+    HtmlParser parser = new HtmlParser(unescapeHtml(item.getSelftextHtml()));
     selfText.setText(parser.getSpannableString());
   }
 }

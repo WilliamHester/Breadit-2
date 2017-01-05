@@ -17,7 +17,7 @@ public class TextCommentJson {
   String author_flair_text;
   String distinguished;
 //  VoteStatus likes;
-//  Edited edited;
+  Edited edited;
   int gilded;
   int score;
   int created;

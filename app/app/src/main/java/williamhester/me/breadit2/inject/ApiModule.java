@@ -1,6 +1,7 @@
 package williamhester.me.breadit2.inject;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import williamhester.me.breadit2.models.Edited;
 import williamhester.me.breadit2.models.managers.AccountManager;
 import williamhester.me.breadit2.apis.RedditApi;
 
@@ -22,7 +24,9 @@ public class ApiModule {
   @Provides
   @Singleton
   Gson provideGson() {
-    return new Gson();
+    return new GsonBuilder()
+        .registerTypeAdapter(Edited.class, new Edited.TypeAdapter())
+        .create();
   }
 
   @Provides
@@ -66,5 +70,4 @@ public class ApiModule {
                              AccountManager accountManager) {
     return new RedditApi(client, parser, gson, accountManager);
   }
-
 }

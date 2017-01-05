@@ -2,19 +2,26 @@ package williamhester.me.breadit2.ui.viewholders;
 
 import android.view.View;
 
+import butterknife.ButterKnife;
+import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.MoreComment;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 
-/**
- * Created by william on 6/16/16.
- */
+import static butterknife.ButterKnife.findById;
+
+/** ViewHolder that holds a {@link MoreComment}. */
 public class MoreCommentsViewHolder extends CommentViewHolder<MoreComment> {
-  public MoreCommentsViewHolder(View itemView, VotableClickListener clickListener) {
+
+  private final View levelIndicator;
+
+  public MoreCommentsViewHolder(View itemView, VotableCallbacks clickListener) {
     super(itemView, clickListener);
+
+    levelIndicator = findById(itemView, R.id.level_indicator);
   }
 
   @Override
-  public void setContent(MoreComment item) {
-    super.setContent(item);
+  View getLevelIndicator() {
+    return levelIndicator;
   }
 }

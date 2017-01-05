@@ -6,19 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import williamhester.me.breadit2.apis.DataCallback;
+import williamhester.me.breadit2.apis.RedditApi;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.models.Submission;
 
 /**
  * Created by william on 6/17/16.
  */
-public class CommentsPresenter extends RedditPresenter {
+public class CommentsPresenter {
 
   private Submission submission;
   private final List<Comment> comments = new ArrayList<>();
   private String permalink;
+  private RedditApi redditApi;
 
-  public CommentsPresenter(String permalink, Submission s) {
+  public CommentsPresenter(RedditApi api, String permalink, Submission s) {
+    this.redditApi = api;
     this.permalink = permalink;
     this.submission = s;
   }
@@ -45,5 +48,4 @@ public class CommentsPresenter extends RedditPresenter {
   public interface OnCommentsLoadedListener {
     void onCommentsLoaded();
   }
-
 }

@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="comment_indent">4dp</dimen>
+    <dimen name="comment_indent">3dp</dimen>
     <dimen name="half_margin">4dp</dimen>
     <dimen name="standard_margin">8dp</dimen>
     <dimen name="body_text">10sp</dimen>

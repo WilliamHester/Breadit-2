@@ -1,14 +1,13 @@
 package williamhester.me.breadit2.ui;
 
+import android.os.Parcelable;
+
 import williamhester.me.breadit2.models.Link;
 
-/**
- * Created by william on 6/17/16.
- */
+/** Callbacks when content is clicked */
 public interface ContentCallbacks {
 
-  void navigateTo(Object object);
+  void navigateTo(Parcelable parcelable);
 
   void showLink(Link link);
-
 }

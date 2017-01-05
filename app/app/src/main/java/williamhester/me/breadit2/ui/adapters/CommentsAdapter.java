@@ -10,14 +10,15 @@ import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.models.MoreComment;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.MoreCommentsViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionSelfTextViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
 
 /**
- * Created by william on 6/16/16.
+ * An adapter for pages that are showing a comments screen. Keeps the submission at the top and
+ * displays the rest of the comments in the regular tree structure.
  */
 public class CommentsAdapter extends ContentAdapter {
 
@@ -27,7 +28,7 @@ public class CommentsAdapter extends ContentAdapter {
   private final List<Comment> comments;
   private Submission submission;
 
-  public CommentsAdapter(LayoutInflater inflater, VotableClickListener clickListener,
+  public CommentsAdapter(LayoutInflater inflater, VotableCallbacks clickListener,
                          Submission submission, List<Comment> comments) {
     super(inflater, clickListener);
 
@@ -75,7 +76,7 @@ public class CommentsAdapter extends ContentAdapter {
   @Override
   public int getItemViewType(int position) {
     if (position == 0 && submission != null) {
-      if (submission.isSelf() && submission.getSelftextHtml() != null) {
+      if (!submission.getSelftextHtml().isEmpty()) {
         return SUBMISSION_SELF;
       } else {
         return super.getItemViewType(position);

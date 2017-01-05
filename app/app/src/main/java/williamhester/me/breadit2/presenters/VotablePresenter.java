@@ -11,7 +11,7 @@ import williamhester.me.breadit2.models.Votable;
 /**
  * Created by william on 6/13/16.
  */
-public abstract class VotablePresenter extends RedditPresenter implements Parcelable {
+public abstract class VotablePresenter implements Parcelable {
 
   protected static final int SUBMISSION = 1;
 
@@ -51,5 +51,4 @@ public abstract class VotablePresenter extends RedditPresenter implements Parcel
     this.title = in.readString();
 //    this.votables.addAll(in.createTypedArrayList(Votable.CREATOR));
   }
-
 }

@@ -1,10 +1,12 @@
 package williamhester.me.breadit2.models;
 
+import java.util.List;
+
 /**
- * Created by william on 6/15/16.
+ * A class to hold Submission data. Has no getters or setters, as it should be used entirely as a
+ * struct to parse the data from the server using Gson then to be put into real models.
  */
 public class SubmissionJson {
-
   String domain;
   String subreddit;
   String subreddit_id;
@@ -20,7 +22,8 @@ public class SubmissionJson {
   String link_flair_text;
   String author_flair_text;
   String distinguished;
-//  boolean edited;
+  Edited edited;
+  Preview preview;
   boolean archived;
   boolean over_18;
   boolean hidden;
@@ -37,4 +40,23 @@ public class SubmissionJson {
   int num_comments;
   int edited_utc;
 
+  static class Preview {
+    List<ImageData> images;
+  }
+
+  static class ImageData {
+    Image source;
+    List<Image> resolutions;
+    Variants variants;
+  }
+
+  static class Image {
+    String url;
+    int width;
+    int height;
+  }
+
+  static class Variants {
+    ImageData mp4;
+  }
 }

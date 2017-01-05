@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import java.util.ArrayList;
 
+import static williamhester.me.breadit2.util.Util.unescapeHtml;
+
 /**
  * Created by william on 6/16/16.
  */
@@ -41,10 +43,10 @@ public class TextComment extends Comment {
     this.author = json.author;
     this.parentId = json.parent_id;
     this.body = json.body;
-    this.bodyHtml = json.body_html;
+    this.bodyHtml = unescapeHtml(json.body_html);
     this.subreddit = json.subreddit;
     this.name = json.name;
-    this.authorFlairText = json.author_flair_text;
+    this.authorFlairText = unescapeHtml(json.author_flair_text);
     this.createdUtc = json.created_utc;
     this.distinguished = json.distinguished;
 //    this.likes = json.likes;

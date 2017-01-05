@@ -34,6 +34,7 @@ public class Link implements Parcelable {
 
   public Link(String url) {
     this.url = url;
+    this.uri = Uri.parse(url);
     if (this.url.charAt(0) == '/') {
       if (this.url.charAt(1) == 'u') { // go to a user
         id = this.url.substring(this.url.indexOf("/u/") + 3);
@@ -43,7 +44,6 @@ public class Link implements Parcelable {
         type = SUBREDDIT;
       }
     } else {
-      uri = Uri.parse(url);
       try {
         if (uri.getHost().contains("reddit.com")) {
           generateRedditDetails();
@@ -211,6 +211,10 @@ public class Link implements Parcelable {
 
   public String getUrl() {
     return url;
+  }
+
+  public Uri getUri() {
+    return uri;
   }
 
   @Override

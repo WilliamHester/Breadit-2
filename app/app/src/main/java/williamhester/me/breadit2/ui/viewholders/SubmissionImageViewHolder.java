@@ -7,8 +7,9 @@ import com.bumptech.glide.Glide;
 
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 
 /**
  * Created by william on 6/13/16.
@@ -16,14 +17,18 @@ import williamhester.me.breadit2.ui.VotableClickListener;
 public class SubmissionImageViewHolder extends SubmissionViewHolder {
   private final ImageView imageView;
 
-  public SubmissionImageViewHolder(View itemView, VotableClickListener clickListener) {
+  public SubmissionImageViewHolder(View itemView, final VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
     imageView = ButterKnife.findById(itemView, R.id.image);
     imageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        // TODO: click link for submission
+        Submission content = getContent();
+        if (content == null) {
+          return;
+        }
+        clickListener.onLinkClicked(new Link(content.getUrl()));
       }
     });
   }
@@ -33,9 +38,10 @@ public class SubmissionImageViewHolder extends SubmissionViewHolder {
     super.setContent(item);
 
     Glide.with(itemView.getContext())
-        .load(item.getUrl())
+        .load(item.getPreviewUrl())
         .centerCrop()
         .crossFade()
+        .error(android.R.drawable.stat_notify_error)
         .into(imageView);
   }
 }

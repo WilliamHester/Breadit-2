@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/half_margin">
-    
+    android:layout_height="wrap_content">
+
+    <View android:id="@+id/level_indicator"
+        android:layout_width="@dimen/comment_indent"
+        android:layout_height="match_parent"
+        android:background="@color/nsfw"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/half_margin">
+        android:orientation="vertical"
+        android:padding="@dimen/half_margin">
 
-        <TextView android:id="@+id/author"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/half_margin"
-            android:singleLine="true"
-            style="@style/InfoText"
-            tools:text="Author"/>
+            android:layout_marginBottom="@dimen/half_margin">
 
-        <TextView android:id="@+id/flair"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/half_margin"
-            android:singleLine="true"
-            style="@style/SecondaryText"
-            tools:text="This is some flair"/>
+            <TextView android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/half_margin"
+                android:lines="1"
+                style="@style/InfoText"
+                tools:text="Author"/>
 
-        <TextView android:id="@+id/metadata"
-            android:layout_width="wrap_content"
+            <TextView android:id="@+id/flair"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/half_margin"
+                android:lines="1"
+                style="@style/SecondaryText"
+                tools:text="This is some flair"/>
+
+            <TextView android:id="@+id/metadata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                style="@style/SecondaryText"
+                tools:text="123 • 5h"/>
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/body"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            style="@style/SecondaryText"
-            tools:text="123 • 5h"/>
-        
+            style="@style/PrimaryText"
+            tools:text="This is some body text"/>
     </LinearLayout>
-    
-    <TextView android:id="@+id/body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/PrimaryText"
-        tools:text="This is some body text"/>
-
 </LinearLayout>

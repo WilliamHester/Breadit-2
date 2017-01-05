@@ -1,9 +1,12 @@
 package williamhester.me.breadit2.ui.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Link;
@@ -56,15 +59,12 @@ public class ContentActivity extends BaseActivity implements ContentCallbacks {
   }
 
   @Override
-  public void navigateTo(Object object) {
-    if (!(object instanceof Parcelable)) {
-      return;
-    }
+  public void navigateTo(Parcelable parcelable) {
     Bundle args = new Bundle();
-    args.putParcelable(VOTABLE_EXTRA, (Parcelable) object);
+    args.putParcelable(VOTABLE_EXTRA, parcelable);
     Intent i = null;
-    if (object instanceof Submission) {
-      Submission submission = (Submission) object;
+    if (parcelable instanceof Submission) {
+      Submission submission = (Submission) parcelable;
       args.putString(TYPE_EXTRA, COMMENTS);
       args.putString(PERMALINK_EXTRA, submission.getPermalink());
       i = new Intent(this, ContentActivity.class);
@@ -73,11 +73,11 @@ public class ContentActivity extends BaseActivity implements ContentCallbacks {
       i.putExtras(args);
       startActivity(i);
     }
-
   }
 
   @Override
   public void showLink(Link link) {
-
+    CustomTabsIntent customTab = new CustomTabsIntent.Builder().build();
+    customTab.launchUrl(this, link.getUri());
   }
 }

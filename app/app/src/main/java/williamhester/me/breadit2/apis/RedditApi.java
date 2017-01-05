@@ -35,9 +35,7 @@ import williamhester.me.breadit2.models.TextComment;
 import williamhester.me.breadit2.models.TextCommentJson;
 import williamhester.me.breadit2.models.managers.AccountManager;
 
-/**
- * Created by william on 6/13/16.
- */
+/** Contains methods to communicate with Reddit */
 public class RedditApi {
 
   private OkHttpClient httpClient;
@@ -191,8 +189,8 @@ public class RedditApi {
               callback.onJsonResponse(jsonParser.parse(response.body().charStream()));
             } catch (JsonIOException | JsonSyntaxException e) {
               Log.d("RedditApi", "Request failed", e);
+              callback.onJsonResponse(null);
             }
-            callback.onJsonResponse(null);
           }
           response.close();
         }
@@ -215,5 +213,4 @@ public class RedditApi {
   interface JsonCallback {
     void onJsonResponse(JsonElement element);
   }
-
 }

@@ -11,4 +11,9 @@
     <color name="nsfw">#BF3F3F</color>
 
     <color name="background">#202020</color>
+
+    <color name="level_1">#0AD3FF</color>
+    <color name="level_2">#F26419</color>
+    <color name="level_3">#745296</color>
+    <color name="level_4">#F6AE2D</color>
 </resources>

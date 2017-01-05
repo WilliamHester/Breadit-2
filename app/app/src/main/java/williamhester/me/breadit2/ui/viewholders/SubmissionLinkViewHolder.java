@@ -6,7 +6,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 
 /**
  * Created by william on 6/13/16.
@@ -14,7 +14,7 @@ import williamhester.me.breadit2.ui.VotableClickListener;
 public class SubmissionLinkViewHolder extends SubmissionViewHolder {
   private final TextView linkText;
 
-  public SubmissionLinkViewHolder(View itemView, final VotableClickListener clickListener) {
+  public SubmissionLinkViewHolder(View itemView, final VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
     linkText = ButterKnife.findById(itemView, R.id.link_text);

@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.models.TextComment;
-import williamhester.me.breadit2.ui.VotableClickListener;
+import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionImageViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionLinkViewHolder;
@@ -28,9 +28,9 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
   private static final int TEXT_COMMENT = 10;
 
   protected LayoutInflater layoutInflater;
-  protected WeakReference<VotableClickListener> clickListener;
+  protected WeakReference<VotableCallbacks> clickListener;
 
-  public ContentAdapter(LayoutInflater inflater, VotableClickListener clickListener) {
+  public ContentAdapter(LayoutInflater inflater, VotableCallbacks clickListener) {
     layoutInflater = inflater;
     this.clickListener = new WeakReference<>(clickListener);
   }
@@ -76,14 +76,11 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
   }
 
   @Override
-  public abstract int getItemCount();
-
-  @Override
   public int getItemViewType(int position) {
     Object o = getItemForPosition(position);
     if (o instanceof Submission) {
       Submission sub = (Submission) o;
-      if (sub.getUrl().endsWith(".png")) {
+      if (sub.getPreviewUrl() != null) {
         return SUBMISSION_IMAGE;
       }
       if (!sub.isSelf()) {

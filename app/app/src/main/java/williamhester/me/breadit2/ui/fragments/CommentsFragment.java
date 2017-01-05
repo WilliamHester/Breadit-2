@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import williamhester.me.breadit2.apis.RedditApi;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.MoreComment;
@@ -46,10 +47,10 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
   }
 
   @Override
-  protected CommentsPresenter createPresenter() {
+  protected CommentsPresenter createPresenter(RedditApi api) {
     String permalink = getArguments().getString(PERMALINK);
     Submission submission = getArguments().getParcelable(SUBMISSION);
-    return new CommentsPresenter(permalink, submission);
+    return new CommentsPresenter(api, permalink, submission);
   }
 
   @Override
