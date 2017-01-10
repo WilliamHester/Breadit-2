@@ -8,7 +8,6 @@ import java.util.List;
 
 import williamhester.me.breadit2.apis.RedditApi;
 import williamhester.me.breadit2.models.Comment;
-import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.MoreComment;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.models.TextComment;
@@ -55,8 +54,9 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
 
   @Override
   protected CommentsAdapter createAdapter(Bundle savedInstanceState) {
-    return new CommentsAdapter(getLayoutInflater(savedInstanceState), this,
-        contentPresenter.getSubmission(), contentPresenter.getComments());
+    return new CommentsAdapter(getLayoutInflater(savedInstanceState), htmlParser,
+        contentClickCallbacks, this, contentPresenter.getSubmission(),
+        contentPresenter.getComments());
   }
 
   @Override
@@ -109,10 +109,5 @@ public class CommentsFragment extends ContentFragment<CommentsPresenter, Comment
 
     adapter.notifyItemChanged(position);
     adapter.notifyItemRangeInserted(position + 1, itemCount);
-  }
-
-  @Override
-  public void onLinkClicked(Link link) {
-
   }
 }

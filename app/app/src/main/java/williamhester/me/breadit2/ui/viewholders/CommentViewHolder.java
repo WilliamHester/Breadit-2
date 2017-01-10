@@ -6,13 +6,14 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 
 import static java.lang.Math.max;
 
 /** ViewHolder class for holding comments; manages comments indentation and level indicators. */
-public abstract class CommentViewHolder<T extends Comment> extends ContentViewHolder<T> {
+abstract class CommentViewHolder<T extends Comment> extends ContentViewHolder<T> {
 
   private static final int[] BACKGROUND_COLORS = {
       R.color.level_1,
@@ -23,7 +24,7 @@ public abstract class CommentViewHolder<T extends Comment> extends ContentViewHo
 
   private Comment comment;
 
-  public CommentViewHolder(View itemView, final VotableCallbacks clickListener) {
+  CommentViewHolder(View itemView, final VotableCallbacks clickListener) {
     super(itemView);
 
     itemView.setOnClickListener(new View.OnClickListener() {

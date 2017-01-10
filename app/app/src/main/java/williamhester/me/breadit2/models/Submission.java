@@ -38,7 +38,7 @@ public class Submission extends Votable {
   private final int createdUtc;
   private final int numComments;
   private final int editedUtc;
-//  private Link link;
+//  private Anchor link;
 //  private VoteStatus voteStatus;
 
   public Submission(SubmissionJson json) {

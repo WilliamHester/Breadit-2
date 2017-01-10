@@ -14,9 +14,7 @@ import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.ui.ContentCallbacks;
 import williamhester.me.breadit2.ui.fragments.CommentsFragment;
 
-/**
- * Created by william on 6/17/16.
- */
+/** Activity that holds basic content. */
 public class ContentActivity extends BaseActivity implements ContentCallbacks {
 
   public static final String TYPE_EXTRA = "type";
@@ -73,11 +71,5 @@ public class ContentActivity extends BaseActivity implements ContentCallbacks {
       i.putExtras(args);
       startActivity(i);
     }
-  }
-
-  @Override
-  public void showLink(Link link) {
-    CustomTabsIntent customTab = new CustomTabsIntent.Builder().build();
-    customTab.launchUrl(this, link.getUri());
   }
 }

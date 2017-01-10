@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.models.Comment;
 import williamhester.me.breadit2.models.MoreComment;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.ContentClickCallbacks;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.MoreCommentsViewHolder;
@@ -28,9 +30,13 @@ public class CommentsAdapter extends ContentAdapter {
   private final List<Comment> comments;
   private Submission submission;
 
-  public CommentsAdapter(LayoutInflater inflater, VotableCallbacks clickListener,
-                         Submission submission, List<Comment> comments) {
-    super(inflater, clickListener);
+  public CommentsAdapter(LayoutInflater inflater,
+      HtmlParser htmlParser,
+      ContentClickCallbacks contentClickCallbacks,
+      VotableCallbacks clickListener,
+      Submission submission,
+      List<Comment> comments) {
+    super(inflater, htmlParser, contentClickCallbacks, clickListener);
 
     this.submission = submission;
     this.comments = comments;
@@ -49,7 +55,7 @@ public class CommentsAdapter extends ContentAdapter {
         return new MoreCommentsViewHolder(v, clickListener.get());
       case SUBMISSION_SELF:
         v = layoutInflater.inflate(R.layout.row_submission_self, parent, false);
-        return new SubmissionSelfTextViewHolder(v, clickListener.get());
+        return new SubmissionSelfTextViewHolder(v, getHtmlParser(), clickListener.get());
       default:
         return super.onCreateViewHolder(parent, viewType);
     }

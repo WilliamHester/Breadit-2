@@ -9,6 +9,7 @@ import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
 import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.Submission;
+import williamhester.me.breadit2.ui.ContentClickCallbacks;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 
 /**
@@ -17,7 +18,8 @@ import williamhester.me.breadit2.ui.VotableCallbacks;
 public class SubmissionImageViewHolder extends SubmissionViewHolder {
   private final ImageView imageView;
 
-  public SubmissionImageViewHolder(View itemView, final VotableCallbacks clickListener) {
+  public SubmissionImageViewHolder(
+      View itemView, final ContentClickCallbacks contentCallbacks, VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
     imageView = ButterKnife.findById(itemView, R.id.image);
@@ -28,7 +30,7 @@ public class SubmissionImageViewHolder extends SubmissionViewHolder {
         if (content == null) {
           return;
         }
-        clickListener.onLinkClicked(new Link(content.getUrl()));
+        contentCallbacks.onLinkClicked(new Link(content.getUrl()));
       }
     });
   }

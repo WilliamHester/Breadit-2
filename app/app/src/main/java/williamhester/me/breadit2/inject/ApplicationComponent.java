@@ -5,11 +5,9 @@ import javax.inject.Singleton;
 import dagger.Component;
 import williamhester.me.breadit2.ui.fragments.BaseFragment;
 
-/**
- * Created by william on 6/15/16.
- */
-@Component(modules = ApiModule.class)
+/**  */
+@Component(modules = {ApiModule.class, HtmlModule.class})
 @Singleton
-public interface ApiComponent {
+public interface ApplicationComponent {
   void inject(BaseFragment api);
 }

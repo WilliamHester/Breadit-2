@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import java.lang.ref.WeakReference;
 
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.models.TextComment;
+import williamhester.me.breadit2.ui.ContentClickCallbacks;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.viewholders.ContentViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionImageViewHolder;
@@ -17,9 +19,7 @@ import williamhester.me.breadit2.ui.viewholders.SubmissionLinkViewHolder;
 import williamhester.me.breadit2.ui.viewholders.SubmissionViewHolder;
 import williamhester.me.breadit2.ui.viewholders.TextCommentViewHolder;
 
-/**
- * Created by william on 6/13/16.
- */
+/** A dynamic adapter that displays the appropriate Reddit content. */
 public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder<?>> {
 
   private static final int SUBMISSION = 1;
@@ -27,12 +27,24 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
   private static final int SUBMISSION_LINK = 3;
   private static final int TEXT_COMMENT = 10;
 
-  protected LayoutInflater layoutInflater;
-  protected WeakReference<VotableCallbacks> clickListener;
+  LayoutInflater layoutInflater;
+  private final HtmlParser htmlParser;
+  protected final WeakReference<ContentClickCallbacks> contentCallbacks;
+  protected final WeakReference<VotableCallbacks> clickListener;
 
-  public ContentAdapter(LayoutInflater inflater, VotableCallbacks clickListener) {
-    layoutInflater = inflater;
+  ContentAdapter(
+      LayoutInflater inflater,
+      HtmlParser htmlParser,
+      ContentClickCallbacks contentClickCallbacks,
+      VotableCallbacks clickListener) {
+    this.layoutInflater = inflater;
+    this.htmlParser = htmlParser;
+    this.contentCallbacks = new WeakReference<>(contentClickCallbacks);
     this.clickListener = new WeakReference<>(clickListener);
+  }
+
+  public HtmlParser getHtmlParser() {
+    return htmlParser;
   }
 
   @Override
@@ -44,13 +56,13 @@ public abstract class ContentAdapter extends RecyclerView.Adapter<ContentViewHol
         return new SubmissionLinkViewHolder(v, clickListener.get());
       case SUBMISSION_IMAGE:
         v = layoutInflater.inflate(R.layout.row_submission_image, parent, false);
-        return new SubmissionImageViewHolder(v, clickListener.get());
+        return new SubmissionImageViewHolder(v, contentCallbacks.get(), clickListener.get());
       case SUBMISSION:
         v = layoutInflater.inflate(R.layout.row_submission, parent, false);
         return new SubmissionViewHolder(v, clickListener.get());
       case TEXT_COMMENT:
         v = layoutInflater.inflate(R.layout.row_comment, parent, false);
-        return new TextCommentViewHolder(v, clickListener.get());
+        return new TextCommentViewHolder(v, htmlParser, clickListener.get());
       default:
         return null;
     }

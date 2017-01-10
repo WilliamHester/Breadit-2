@@ -10,9 +10,7 @@ import williamhester.me.breadit2.models.Votable;
 import williamhester.me.breadit2.presenters.VotablePresenter;
 import williamhester.me.breadit2.ui.adapters.VotableAdapter;
 
-/**
- * Created by william on 6/15/16.
- */
+/**  */
 public abstract class VotableFragment extends ContentFragment<VotablePresenter, VotableAdapter> {
 
   private boolean canLoad = true;
@@ -37,18 +35,13 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
 
   @Override
   protected VotableAdapter createAdapter(Bundle savedInstanceState) {
-    return new VotableAdapter(getLayoutInflater(savedInstanceState), this,
-        contentPresenter.getVotables());
+    return new VotableAdapter(getLayoutInflater(savedInstanceState), htmlParser,
+        contentClickCallbacks, this, contentPresenter.getVotables());
   }
 
   @Override
   public void onVotableClicked(Votable votable) {
     clickListener.get().navigateTo(votable);
-  }
-
-  @Override
-  public void onLinkClicked(Link link) {
-    clickListener.get().showLink(link);
   }
 
   private class InfiniteLoadScrollListener extends RecyclerView.OnScrollListener {

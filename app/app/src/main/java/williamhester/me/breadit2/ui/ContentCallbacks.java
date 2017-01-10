@@ -8,6 +8,4 @@ import williamhester.me.breadit2.models.Link;
 public interface ContentCallbacks {
 
   void navigateTo(Parcelable parcelable);
-
-  void showLink(Link link);
 }

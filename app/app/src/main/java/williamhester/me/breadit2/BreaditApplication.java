@@ -2,24 +2,25 @@ package williamhester.me.breadit2;
 
 import android.app.Application;
 
-import williamhester.me.breadit2.inject.ApiComponent;
-import williamhester.me.breadit2.inject.DaggerApiComponent;
+import williamhester.me.breadit2.inject.ApplicationComponent;
+import williamhester.me.breadit2.inject.DaggerApplicationComponent;
+import williamhester.me.breadit2.inject.HtmlModule;
 
-/**
- * Created by william on 6/15/16.
- */
+/** Contains the Dagger component for the application. */
 public class BreaditApplication extends Application {
 
-  private ApiComponent apiComponent;
+  private ApplicationComponent applicationComponent;
 
   @Override
   public void onCreate() {
     super.onCreate();
 
-    apiComponent = DaggerApiComponent.builder().build();
+    applicationComponent = DaggerApplicationComponent.builder()
+        .htmlModule(new HtmlModule(this))
+        .build();
   }
 
-  public ApiComponent getApiComponent() {
-    return apiComponent;
+  public ApplicationComponent getApplicationComponent() {
+    return applicationComponent;
   }
 }

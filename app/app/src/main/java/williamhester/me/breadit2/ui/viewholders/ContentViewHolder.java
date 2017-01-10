@@ -3,10 +3,13 @@ package williamhester.me.breadit2.ui.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import williamhester.me.breadit2.html.HtmlParser;
+
 /**
  * Created by william on 6/13/16.
  */
 public abstract class ContentViewHolder<T> extends RecyclerView.ViewHolder {
+
   public ContentViewHolder(View itemView) {
     super(itemView);
   }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 
@@ -23,7 +24,8 @@ public class SubmissionViewHolder extends ContentViewHolder<Submission> {
 
   private Submission submission;
 
-  public SubmissionViewHolder(View itemView, final VotableCallbacks clickListener) {
+  public SubmissionViewHolder(
+      View itemView, final VotableCallbacks clickListener) {
     super(itemView);
 
     itemView.setOnClickListener(new View.OnClickListener() {

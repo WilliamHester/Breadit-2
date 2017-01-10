@@ -4,7 +4,9 @@ import android.view.LayoutInflater;
 
 import java.util.List;
 
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.models.Votable;
+import williamhester.me.breadit2.ui.ContentClickCallbacks;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 
 /**
@@ -14,9 +16,12 @@ public class VotableAdapter extends ContentAdapter {
 
   protected List<Votable> votables;
 
-  public VotableAdapter(LayoutInflater inflater, VotableCallbacks clickListener,
-                        List<Votable> votables) {
-    super(inflater, clickListener);
+  public VotableAdapter(LayoutInflater inflater,
+      HtmlParser htmlParser,
+      ContentClickCallbacks contentClickCallbacks,
+      VotableCallbacks clickListener,
+      List<Votable> votables) {
+    super(inflater, htmlParser, contentClickCallbacks, clickListener);
     this.votables = votables;
   }
 

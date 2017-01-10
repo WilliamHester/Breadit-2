@@ -11,6 +11,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import williamhester.me.breadit2.BreaditApplication;
 import williamhester.me.breadit2.apis.RedditApi;
+import williamhester.me.breadit2.html.HtmlParser;
+import williamhester.me.breadit2.ui.ContentClickCallbacks;
 
 /**
  * Created by william on 6/12/16.
@@ -18,6 +20,8 @@ import williamhester.me.breadit2.apis.RedditApi;
 public abstract class BaseFragment extends Fragment {
 
   @Inject protected RedditApi api;
+  @Inject protected HtmlParser htmlParser;
+  @Inject protected ContentClickCallbacks contentClickCallbacks;
 
   private Unbinder unbinder;
 
@@ -26,7 +30,7 @@ public abstract class BaseFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     BreaditApplication app = (BreaditApplication) getActivity().getApplicationContext();
-    app.getApiComponent().inject(this);
+    app.getApplicationComponent().inject(this);
   }
 
   @Override

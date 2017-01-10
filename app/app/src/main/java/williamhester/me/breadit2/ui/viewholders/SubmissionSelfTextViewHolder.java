@@ -4,26 +4,29 @@ import android.view.View;
 import android.widget.TextView;
 
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParseResult;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.HtmlParser;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.text.VotableMovementMethod;
 
 import static butterknife.ButterKnife.findById;
-import static williamhester.me.breadit2.util.Util.unescapeHtml;
 
 /** A ViewHolder for a {@link Submission} that has self text. */
 public class SubmissionSelfTextViewHolder extends SubmissionViewHolder {
 
+  private final HtmlParser htmlParser;
   private final TextView selfText;
   private final VotableMovementMethod linkMovementMethod;
 
-  public SubmissionSelfTextViewHolder(View itemView, VotableCallbacks clickListener) {
+  public SubmissionSelfTextViewHolder(
+      View itemView, HtmlParser htmlParser, VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
-    selfText = findById(itemView, R.id.self_text);
-    linkMovementMethod = new VotableMovementMethod(clickListener);
-    selfText.setMovementMethod(linkMovementMethod);
+    this.htmlParser = htmlParser;
+    this.selfText = findById(itemView, R.id.self_text);
+    this.linkMovementMethod = new VotableMovementMethod(clickListener);
+    this.selfText.setMovementMethod(linkMovementMethod);
   }
 
   @Override
@@ -31,7 +34,7 @@ public class SubmissionSelfTextViewHolder extends SubmissionViewHolder {
     super.setContent(item);
 
     linkMovementMethod.setVotable(item);
-    HtmlParser parser = new HtmlParser(unescapeHtml(item.getSelftextHtml()));
-    selfText.setText(parser.getSpannableString());
+    HtmlParseResult result = htmlParser.parseHtml(item.getSelftextHtml());
+    selfText.setText(result.getText());
   }
 }

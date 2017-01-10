@@ -15,11 +15,11 @@ import williamhester.me.breadit2.ui.VotableCallbacks;
  */
 public class VotableMovementMethod extends LinkMovementMethod {
 
-  private final VotableCallbacks clickListener;
+  private final VotableCallbacks votableCallbacks;
   private Votable votable;
 
-  public VotableMovementMethod(VotableCallbacks clickListener) {
-    this.clickListener = clickListener;
+  public VotableMovementMethod(VotableCallbacks votableCallbacks) {
+    this.votableCallbacks = votableCallbacks;
   }
 
   public void setVotable(Votable votable) {
@@ -31,7 +31,7 @@ public class VotableMovementMethod extends LinkMovementMethod {
                               @NonNull MotionEvent event) {
     if (event.getAction() == MotionEvent.ACTION_UP) {
       if (!super.onTouchEvent(widget, buffer, event)) {
-        clickListener.onVotableClicked(votable);
+        votableCallbacks.onVotableClicked(votable);
         return false;
       } else {
         return true;

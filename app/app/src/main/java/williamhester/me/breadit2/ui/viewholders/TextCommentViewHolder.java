@@ -5,8 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.html.HtmlParseResult;
 import williamhester.me.breadit2.models.TextComment;
-import williamhester.me.breadit2.ui.HtmlParser;
+import williamhester.me.breadit2.html.HtmlParser;
 import williamhester.me.breadit2.ui.VotableCallbacks;
 import williamhester.me.breadit2.ui.text.VotableMovementMethod;
 
@@ -17,6 +18,7 @@ import static butterknife.ButterKnife.findById;
  */
 public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
 
+  private final HtmlParser htmlParser;
   private final TextView author;
   private final TextView flair;
   private final TextView metadata;
@@ -24,9 +26,11 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
   private final View levelIndicator;
   private final VotableMovementMethod linkMovementMethod;
 
-  public TextCommentViewHolder(View itemView, final VotableCallbacks clickListener) {
+  public TextCommentViewHolder(
+      View itemView, HtmlParser htmlParser, final VotableCallbacks clickListener) {
     super(itemView, clickListener);
 
+    this.htmlParser = htmlParser;
     author = findById(itemView, R.id.author);
     flair = findById(itemView, R.id.flair);
     metadata = findById(itemView, R.id.metadata);
@@ -53,8 +57,8 @@ public class TextCommentViewHolder extends CommentViewHolder<TextComment> {
       body.setVisibility(View.GONE);
     } else {
       body.setVisibility(View.VISIBLE);
-      HtmlParser parser = new HtmlParser(item.getBodyHtml());
-      body.setText(parser.getSpannableString());
+      HtmlParseResult result = htmlParser.parseHtml(item.getBodyHtml());
+      body.setText(result.getText());
     }
   }
 
