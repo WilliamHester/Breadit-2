@@ -5,12 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.Votable;
 import williamhester.me.breadit2.presenters.VotablePresenter;
 import williamhester.me.breadit2.ui.adapters.VotableAdapter;
 
-/**  */
+/** A fragment to show {@link Votable}s. */
 public abstract class VotableFragment extends ContentFragment<VotablePresenter, VotableAdapter> {
 
   private boolean canLoad = true;
@@ -41,7 +40,7 @@ public abstract class VotableFragment extends ContentFragment<VotablePresenter, 
 
   @Override
   public void onVotableClicked(Votable votable) {
-    clickListener.get().navigateTo(votable);
+    contentClickCallbacks.naviageTo(votable);
   }
 
   private class InfiniteLoadScrollListener extends RecyclerView.OnScrollListener {

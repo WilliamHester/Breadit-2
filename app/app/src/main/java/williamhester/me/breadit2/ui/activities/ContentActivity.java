@@ -1,21 +1,14 @@
 package williamhester.me.breadit2.ui.activities;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import williamhester.me.breadit2.R;
-import williamhester.me.breadit2.models.Link;
 import williamhester.me.breadit2.models.Submission;
-import williamhester.me.breadit2.ui.ContentCallbacks;
 import williamhester.me.breadit2.ui.fragments.CommentsFragment;
 
 /** Activity that holds basic content. */
-public class ContentActivity extends BaseActivity implements ContentCallbacks {
+public class ContentActivity extends BaseActivity {
 
   public static final String TYPE_EXTRA = "type";
   public static final String VOTABLE_EXTRA = "votable";
@@ -53,23 +46,6 @@ public class ContentActivity extends BaseActivity implements ContentCallbacks {
         return CommentsFragment.newInstance(permalink, s);
       default:
         return null;
-    }
-  }
-
-  @Override
-  public void navigateTo(Parcelable parcelable) {
-    Bundle args = new Bundle();
-    args.putParcelable(VOTABLE_EXTRA, parcelable);
-    Intent i = null;
-    if (parcelable instanceof Submission) {
-      Submission submission = (Submission) parcelable;
-      args.putString(TYPE_EXTRA, COMMENTS);
-      args.putString(PERMALINK_EXTRA, submission.getPermalink());
-      i = new Intent(this, ContentActivity.class);
-    }
-    if (i != null) {
-      i.putExtras(args);
-      startActivity(i);
     }
   }
 }
