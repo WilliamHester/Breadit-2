@@ -4,7 +4,6 @@ import android.app.Application;
 
 import williamhester.me.breadit2.inject.ApplicationComponent;
 import williamhester.me.breadit2.inject.DaggerApplicationComponent;
-import williamhester.me.breadit2.inject.HtmlModule;
 
 /** Contains the Dagger component for the application. */
 public class BreaditApplication extends Application {
@@ -15,9 +14,7 @@ public class BreaditApplication extends Application {
   public void onCreate() {
     super.onCreate();
 
-    applicationComponent = DaggerApplicationComponent.builder()
-        .htmlModule(new HtmlModule(this))
-        .build();
+    applicationComponent = DaggerApplicationComponent.builder().build();
   }
 
   public ApplicationComponent getApplicationComponent() {

@@ -1,6 +1,6 @@
 package williamhester.me.breadit2.inject;
 
-import android.content.Context;
+import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
@@ -12,29 +12,22 @@ import williamhester.me.breadit2.ui.ContentClickCallbacksImpl;
 
 /** A Module for injecting an {@link HtmlParser} and {@link ContentClickCallbacksImpl}. */
 @Module
-public class HtmlModule {
-  private Context context;
+public class ApplicationModule {
+  @Provides
+  @Singleton
+  Bus provideBus() {
+    return new Bus();
+  }
 
-  /** Creates an HtmlModule with a context. */
-  public HtmlModule(Context context) {
-    this.context = context;
+  @Provides
+  @Singleton
+  ContentClickCallbacks provideVotableCallbacks(Bus bus) {
+    return new ContentClickCallbacksImpl(bus);
   }
 
   @Provides
   @Singleton
   HtmlParser provideHtmlParser(ContentClickCallbacks callbacks) {
     return new HtmlParser(callbacks);
-  }
-
-  @Provides
-  @Singleton
-  Context provideContext() {
-    return context;
-  }
-
-  @Provides
-  @Singleton
-  ContentClickCallbacks provideVotableCallbacks() {
-    return new ContentClickCallbacksImpl(context);
   }
 }

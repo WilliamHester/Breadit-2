@@ -3,7 +3,10 @@ package williamhester.me.breadit2.ui.activities;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.squareup.otto.Subscribe;
+
 import williamhester.me.breadit2.R;
+import williamhester.me.breadit2.events.StartActivityEvent;
 import williamhester.me.breadit2.models.Submission;
 import williamhester.me.breadit2.ui.fragments.CommentsFragment;
 
@@ -31,6 +34,12 @@ public class ContentActivity extends BaseActivity {
   @Override
   protected int getLayoutId() {
     return R.layout.activity_content;
+  }
+
+  @Override
+  @Subscribe
+  public void startActivity(StartActivityEvent request) {
+    request.startActivity(this);
   }
 
   protected Fragment createContentFragment() {
