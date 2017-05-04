@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.williamhester.reddit.apis.RedditClient;
+import me.williamhester.reddit.convert.RedditGsonConverter;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -66,8 +67,17 @@ public class ApiModule {
 
   @Provides
   @Singleton
-  RedditClient provideRedditApi(OkHttpClient client, JsonParser parser, Gson gson,
-                             AccountManager accountManager) {
-    return new RedditClient(client, parser, gson, accountManager);
+  RedditGsonConverter provideRedditGsonConverter(Gson gson) {
+    return new RedditGsonConverter(gson);
+  }
+
+  @Provides
+  @Singleton
+  RedditClient provideRedditApi(
+      OkHttpClient client,
+      JsonParser parser,
+      AccountManager accountManager,
+      RedditGsonConverter converter) {
+    return new RedditClient(client, parser, accountManager, converter);
   }
 }

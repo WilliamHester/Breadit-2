@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.williamhester.reddit.convert.ConverterException;
+import me.williamhester.reddit.convert.RedditGsonConverter;
+import me.williamhester.reddit.models.Post;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -41,17 +44,17 @@ public class RedditClient {
   private final OkHttpClient httpClient;
   private final JsonParser jsonParser;
   private final AccountManager accountManager;
-  private final Gson gson;
+  private final RedditGsonConverter redditGsonConverter;
 
   public RedditClient(
       OkHttpClient client,
       JsonParser jsonParser,
-      Gson gson,
-      AccountManager accountManager) {
+      AccountManager accountManager,
+      RedditGsonConverter redditGsonConverter) {
     this.httpClient = client;
     this.jsonParser = jsonParser;
     this.accountManager = accountManager;
-    this.gson = gson;
+    this.redditGsonConverter = redditGsonConverter;
   }
 
   public void getSubmissions(String place, String query, String after,
@@ -66,17 +69,11 @@ public class RedditClient {
         if (element == null) {
           return;
         }
-        JsonObject object = element.getAsJsonObject();
         final List<Submission> submissions = new ArrayList<>();
-        if (object.has("data") && object.get("data").getAsJsonObject().has("children")) {
-          JsonArray array = object.get("data").getAsJsonObject().get("children").getAsJsonArray();
-          for (JsonElement elem : array) {
-            SubmissionJson json = gson.fromJson(elem.getAsJsonObject().get("data"),
-                SubmissionJson.class);
-            submissions.add(new Submission(json));
-          }
-        } else {
-          Log.d("RedditClient", "no data available");
+        try {
+          submissions.addAll(redditGsonConverter.<Submission>toList(element));
+        } catch (ConverterException e) {
+          Log.e("RedditClient", "Failed to convert json", e);
         }
         new Handler(Looper.getMainLooper()).post(new Runnable() {
           @Override
@@ -92,60 +89,28 @@ public class RedditClient {
                           final DataCallback<Pair<Submission, List<Comment>>> callback) {
     new RedditRequest(permalink, null).getJson(new JsonCallback() {
       @Override
-      public void onJsonResponse(JsonElement element) {
+      public void onJsonResponse(final JsonElement element) {
         if (element == null) {
           return;
         }
-        JsonArray array = element.getAsJsonArray();
-        JsonObject submissionData = array.get(0).getAsJsonObject()
-            .get("data").getAsJsonObject()
-            .get("children").getAsJsonArray()
-            .get(0).getAsJsonObject()
-            .get("data").getAsJsonObject();
-        final Submission submission =
-            new Submission(gson.fromJson(submissionData, SubmissionJson.class));
-
-        JsonArray commentsJson = array.get(1).getAsJsonObject()
-            .get("data").getAsJsonObject()
-            .get("children").getAsJsonArray();
-        final List<Comment> comments = parseCommentJson(commentsJson, 0);
-
+        Post post = null;
+        try {
+          post = redditGsonConverter.toPost(element);
+        } catch (ConverterException e) {
+          Log.e("RedditClient", "failed to convert json", e);
+        }
+        final Post post1 = post;
+        if (post == null) {
+          return;
+        }
         new Handler(Looper.getMainLooper()).post(new Runnable() {
           @Override
           public void run() {
-            callback.onResponse(new Pair<>(submission, comments));
+            callback.onResponse(new Pair<>(post1.getSubmission(), post1.getComments()));
           }
         });
       }
     });
-  }
-
-  private List<Comment> parseCommentJson(JsonArray commentsJson, int level) {
-    List<Comment> comments = new ArrayList<>();
-    for (JsonElement commentElement : commentsJson) {
-      Comment comment;
-      JsonObject jsonObject = commentElement.getAsJsonObject();
-      if (jsonObject.get("kind").getAsString().equals("more")) {
-        comment = new MoreComment(
-            gson.fromJson(jsonObject.get("data"), MoreCommentJson.class),
-            level);
-        comments.add(comment);
-      } else {
-        comment = new TextComment(
-            gson.fromJson(jsonObject.get("data"), TextCommentJson.class),
-            level);
-        JsonObject commentJson = jsonObject.get("data").getAsJsonObject();
-        JsonElement replies = commentJson.get("replies");
-        comments.add(comment);
-        if (replies.isJsonObject()) {
-          JsonArray repliesArray = replies.getAsJsonObject()
-              .get("data").getAsJsonObject()
-              .get("children").getAsJsonArray();
-          comments.addAll(parseCommentJson(repliesArray, level + 1));
-        }
-      }
-    }
-    return comments;
   }
 
   class RedditRequest {
