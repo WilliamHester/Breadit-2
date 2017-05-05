@@ -1,6 +1,5 @@
 package me.williamhester.reddit.ui.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -27,9 +26,6 @@ public class ContentActivity extends BaseActivity {
           .add(R.id.fragment_container, createContentFragment())
           .commit();
     }
-
-    SharedPreferences prefs = getSharedPreferences("default", MODE_PRIVATE);
-    prefs.edit().putBoolean("test", true).apply();
   }
 
   @Override
