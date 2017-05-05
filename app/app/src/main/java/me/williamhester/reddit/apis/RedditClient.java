@@ -13,6 +13,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 import me.williamhester.reddit.convert.ConverterException;
 import me.williamhester.reddit.convert.RedditGsonConverter;
+import me.williamhester.reddit.messages.FailedRedditRequestMessage;
 import me.williamhester.reddit.models.Post;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,16 +48,19 @@ public class RedditClient {
   private final JsonParser jsonParser;
   private final AccountManager accountManager;
   private final RedditGsonConverter redditGsonConverter;
+  private final EventBus bus;
 
   public RedditClient(
       OkHttpClient client,
       JsonParser jsonParser,
       AccountManager accountManager,
-      RedditGsonConverter redditGsonConverter) {
+      RedditGsonConverter redditGsonConverter,
+      EventBus bus) {
     this.httpClient = client;
     this.jsonParser = jsonParser;
     this.accountManager = accountManager;
     this.redditGsonConverter = redditGsonConverter;
+    this.bus = bus;
   }
 
   public void getSubmissions(String place, String query, String after,
@@ -137,11 +143,11 @@ public class RedditClient {
           .build();
     }
 
-    public void getJson(final JsonCallback callback) {
+    void getJson(final JsonCallback callback) {
       httpClient.newCall(request).enqueue(new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
-          callback.onJsonResponse(null);
+          bus.post(new FailedRedditRequestMessage());
         }
 
         @Override

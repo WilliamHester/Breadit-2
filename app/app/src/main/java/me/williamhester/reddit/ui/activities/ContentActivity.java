@@ -1,9 +1,14 @@
 package me.williamhester.reddit.ui.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import me.williamhester.reddit.R;
+import me.williamhester.reddit.messages.FailedRedditRequestMessage;
 import me.williamhester.reddit.models.Submission;
 import me.williamhester.reddit.ui.fragments.CommentsFragment;
 
@@ -47,5 +52,15 @@ public class ContentActivity extends BaseActivity {
       default:
         return null;
     }
+  }
+
+  @Subscribe
+  public void onRequestFailure(FailedRedditRequestMessage message) {
+    Snackbar
+        .make(
+            findViewById(R.id.fragment_container),
+            R.string.request_failed,
+            BaseTransientBottomBar.LENGTH_SHORT)
+        .show();
   }
 }

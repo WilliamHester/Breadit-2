@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import javax.inject.Singleton;
@@ -77,7 +79,8 @@ public class ApiModule {
       OkHttpClient client,
       JsonParser parser,
       AccountManager accountManager,
-      RedditGsonConverter converter) {
-    return new RedditClient(client, parser, accountManager, converter);
+      RedditGsonConverter converter,
+      EventBus bus) {
+    return new RedditClient(client, parser, accountManager, converter, bus);
   }
 }
