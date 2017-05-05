@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.customtabs.CustomTabsIntent;
 
-import com.squareup.otto.Bus;
+import org.greenrobot.eventbus.EventBus;
 
 import me.williamhester.reddit.events.StartActivityEvent;
 import me.williamhester.reddit.models.Link;
@@ -20,9 +20,9 @@ import static me.williamhester.reddit.ui.activities.ContentActivity.VOTABLE_EXTR
 
 /** Callbacks called when a link is clicked. */
 public class ContentClickCallbacksImpl implements ContentClickCallbacks {
-  private final Bus bus;
+  private final EventBus bus;
 
-  public ContentClickCallbacksImpl(Bus bus) {
+  public ContentClickCallbacksImpl(EventBus bus) {
     this.bus = bus;
   }
 

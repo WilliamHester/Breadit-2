@@ -3,7 +3,8 @@ package me.williamhester.reddit.ui.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.squareup.otto.Bus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -11,7 +12,7 @@ import me.williamhester.reddit.BreaditApplication;
 import me.williamhester.reddit.events.StartActivityEvent;
 
 public abstract class BaseActivity extends AppCompatActivity {
-  @Inject Bus bus;
+  @Inject EventBus bus;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     bus.unregister(this);
   }
 
-  public abstract void startActivity(StartActivityEvent request);
+  @Subscribe
+  public void startActivity(StartActivityEvent request) {
+    request.startActivity(this);
+  }
 
   protected abstract int getLayoutId();
 }

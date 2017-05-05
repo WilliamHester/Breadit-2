@@ -4,10 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.squareup.otto.Subscribe;
-
 import me.williamhester.reddit.R;
-import me.williamhester.reddit.events.StartActivityEvent;
 import me.williamhester.reddit.models.Submission;
 import me.williamhester.reddit.ui.fragments.CommentsFragment;
 
@@ -38,12 +35,6 @@ public class ContentActivity extends BaseActivity {
   @Override
   protected int getLayoutId() {
     return R.layout.activity_content;
-  }
-
-  @Override
-  @Subscribe
-  public void startActivity(StartActivityEvent request) {
-    request.startActivity(this);
   }
 
   protected Fragment createContentFragment() {

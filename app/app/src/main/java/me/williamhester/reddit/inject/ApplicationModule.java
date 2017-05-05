@@ -1,6 +1,6 @@
 package me.williamhester.reddit.inject;
 
-import com.squareup.otto.Bus;
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
@@ -15,13 +15,13 @@ import me.williamhester.reddit.ui.ContentClickCallbacksImpl;
 public class ApplicationModule {
   @Provides
   @Singleton
-  Bus provideBus() {
-    return new Bus();
+  EventBus provideBus() {
+    return new EventBus();
   }
 
   @Provides
   @Singleton
-  ContentClickCallbacks provideVotableCallbacks(Bus bus) {
+  ContentClickCallbacks provideVotableCallbacks(EventBus bus) {
     return new ContentClickCallbacksImpl(bus);
   }
 
