@@ -2,19 +2,8 @@ package me.williamhester.reddit.ui.fragments;
 
 import android.os.Bundle;
 
-import javax.inject.Inject;
-
-import me.williamhester.reddit.apis.RedditClient;
-import me.williamhester.reddit.presenters.SubmissionPresenter;
-import me.williamhester.reddit.presenters.VotablePresenter;
-
-/**
- * Created by william on 6/15/16.
- */
+/** A fragment that shows Submissions */
 public class SubmissionFragment extends VotableFragment {
-
-  @Inject
-  RedditClient api;
 
   public static SubmissionFragment newInstance() {
     Bundle args = new Bundle();
@@ -24,7 +13,7 @@ public class SubmissionFragment extends VotableFragment {
   }
 
   @Override
-  protected VotablePresenter createPresenter(RedditClient api) {
-    return new SubmissionPresenter(api);
+  protected void loadContent() {
+    redditClient.getSubmissions("", null, getAfter());
   }
 }

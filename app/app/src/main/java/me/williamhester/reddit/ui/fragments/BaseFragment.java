@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -19,9 +21,10 @@ import me.williamhester.reddit.ui.ContentClickCallbacks;
  */
 public abstract class BaseFragment extends Fragment {
 
-  @Inject protected RedditClient api;
-  @Inject protected HtmlParser htmlParser;
-  @Inject protected ContentClickCallbacks contentClickCallbacks;
+  @Inject RedditClient redditClient;
+  @Inject HtmlParser htmlParser;
+  @Inject ContentClickCallbacks contentClickCallbacks;
+  @Inject EventBus eventBus;
 
   private Unbinder unbinder;
 
@@ -34,10 +37,24 @@ public abstract class BaseFragment extends Fragment {
   }
 
   @Override
+  public void onStart() {
+    super.onStart();
+
+    eventBus.register(this);
+  }
+
+  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     unbinder = ButterKnife.bind(this, view);
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+
+    eventBus.unregister(this);
   }
 
   @Override
@@ -46,5 +63,17 @@ public abstract class BaseFragment extends Fragment {
 
     unbinder.unbind();
     unbinder = null;
+  }
+
+  protected final RedditClient getRedditClient() {
+    return redditClient;
+  }
+
+  protected final HtmlParser getHtmlParser() {
+    return htmlParser;
+  }
+
+  protected final ContentClickCallbacks getContentClickCallbacks() {
+    return contentClickCallbacks;
   }
 }

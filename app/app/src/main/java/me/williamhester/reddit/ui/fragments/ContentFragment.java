@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import me.williamhester.reddit.R;
-import me.williamhester.reddit.apis.RedditClient;
 import me.williamhester.reddit.ui.VotableCallbacks;
 import me.williamhester.reddit.ui.adapters.ContentAdapter;
 
 /** The base fragment for holding a list of items. */
-public abstract class ContentFragment<P, A extends ContentAdapter> extends BaseFragment
+public abstract class ContentFragment<A extends ContentAdapter> extends BaseFragment
     implements VotableCallbacks {
 
   protected A adapter;
@@ -24,15 +23,7 @@ public abstract class ContentFragment<P, A extends ContentAdapter> extends BaseF
   protected RecyclerView recyclerView;
 
   protected LinearLayoutManager layoutManager;
-  protected P contentPresenter;
-  protected boolean loading;
-
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    contentPresenter = createPresenter(api);
-  }
+  private boolean isLoading;
 
   @Nullable
   @Override
@@ -51,11 +42,15 @@ public abstract class ContentFragment<P, A extends ContentAdapter> extends BaseF
     recyclerView.setAdapter(adapter);
   }
 
-  protected void setLoading(boolean loading) {
-    this.loading = loading;
+  protected boolean isLoading() {
+    return isLoading;
   }
 
-  protected abstract P createPresenter(RedditClient api);
+  protected void setLoading(boolean loading) {
+    this.isLoading = loading;
+  }
+
+  protected abstract void loadContent();
 
   protected abstract A createAdapter(Bundle savedInstanceState);
 }

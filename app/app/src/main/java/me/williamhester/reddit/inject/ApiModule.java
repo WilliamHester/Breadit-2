@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.williamhester.reddit.apis.RedditClient;
+import me.williamhester.reddit.apis.RedditHttpRequestFactory;
 import me.williamhester.reddit.convert.RedditGsonConverter;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -75,12 +76,17 @@ public class ApiModule {
 
   @Provides
   @Singleton
-  RedditClient provideRedditApi(
+  RedditHttpRequestFactory provideHttpRedditRequestFactory(
       OkHttpClient client,
-      JsonParser parser,
+      EventBus bus,
       AccountManager accountManager,
-      RedditGsonConverter converter,
-      EventBus bus) {
-    return new RedditClient(client, parser, accountManager, converter, bus);
+      JsonParser parser) {
+    return new RedditHttpRequestFactory(client, accountManager, bus, parser);
+  }
+
+  @Provides
+  @Singleton
+  RedditClient provideRedditApi(RedditGsonConverter converter, RedditHttpRequestFactory factory) {
+    return new RedditClient(converter, factory);
   }
 }

@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.Subscribe;
 import javax.inject.Inject;
 
 import me.williamhester.reddit.BreaditApplication;
-import me.williamhester.reddit.events.StartActivityEvent;
+import me.williamhester.reddit.messages.StartActivityMessage;
 
 public abstract class BaseActivity extends AppCompatActivity {
   @Inject EventBus bus;
@@ -38,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
   }
 
   @Subscribe
-  public void startActivity(StartActivityEvent request) {
+  public void startActivity(StartActivityMessage request) {
     request.startActivity(this);
   }
 

@@ -8,7 +8,7 @@ import android.support.customtabs.CustomTabsIntent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import me.williamhester.reddit.events.StartActivityEvent;
+import me.williamhester.reddit.messages.StartActivityMessage;
 import me.williamhester.reddit.models.Link;
 import me.williamhester.reddit.models.Submission;
 import me.williamhester.reddit.ui.activities.ContentActivity;
@@ -29,7 +29,7 @@ public class ContentClickCallbacksImpl implements ContentClickCallbacks {
   @Override
   public void onLinkClicked(final Link link) {
     final CustomTabsIntent customTab = new CustomTabsIntent.Builder().build();
-    bus.post(new StartActivityEvent() {
+    bus.post(new StartActivityMessage() {
       @Override
       public void startActivity(Context context) {
         customTab.launchUrl(context, link.getUri());
@@ -49,7 +49,7 @@ public class ContentClickCallbacksImpl implements ContentClickCallbacks {
     args.putString(TYPE_EXTRA, COMMENTS);
     args.putString(PERMALINK_EXTRA, submission.getPermalink());
 
-    bus.post(new StartActivityEvent() {
+    bus.post(new StartActivityMessage() {
       @Override
       public void startActivity(Context context) {
         final Intent i = new Intent(context, ContentActivity.class);
