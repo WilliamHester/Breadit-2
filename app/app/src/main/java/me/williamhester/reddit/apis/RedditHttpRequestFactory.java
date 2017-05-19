@@ -30,6 +30,10 @@ public class RedditHttpRequestFactory {
   private final EventBus bus;
   private final JsonParser jsonParser;
 
+  public interface Factory {
+    RedditHttpRequestFactory create(EventBus bus);
+  }
+
   public RedditHttpRequestFactory(
       OkHttpClient client, AccountManager accountManager, EventBus bus, JsonParser jsonParser) {
     this.httpClient = client;
@@ -59,6 +63,11 @@ public class RedditHttpRequestFactory {
         .build();
 
     httpClient.newCall(request).enqueue(new JsonCallback(request, converter));
+  }
+
+  /** Cancels all pending and executing requests. */
+  public void cancelAll() {
+    httpClient.dispatcher().cancelAll();
   }
 
   private String getBaseUrl() {

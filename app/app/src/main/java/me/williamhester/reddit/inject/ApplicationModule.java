@@ -15,12 +15,6 @@ import me.williamhester.reddit.ui.ContentClickCallbacksImpl;
 public class ApplicationModule {
   @Provides
   @Singleton
-  EventBus provideBus() {
-    return new EventBus();
-  }
-
-  @Provides
-  @Singleton
   ContentClickCallbacks provideVotableCallbacks(EventBus bus) {
     return new ContentClickCallbacksImpl(bus);
   }
