@@ -27,6 +27,10 @@ class RedditHttpRequestFactory(
     private val jsonParser: JsonParser
 ) {
 
+  private val API_URL = "https://api.reddit.com/"
+  private val OAUTH_URL = "https://oauth.reddit.com/"
+
+
   fun createRequest(path: String, converter: (JsonElement) -> Any) {
     createRequest(path, null, converter)
   }
@@ -57,7 +61,7 @@ class RedditHttpRequestFactory(
     get() {
       val builder = Headers.Builder()
       if (accountManager.isLoggedIn) {
-        builder.add("Authorization", "bearer " + accountManager.account.accessToken)
+        builder.add("Authorization", "bearer " + accountManager.account!!.accessToken)
       }
       return builder.build()
     }
@@ -93,10 +97,5 @@ class RedditHttpRequestFactory(
       }
       response.close()
     }
-  }
-
-  companion object {
-    private val API_URL = "https://api.reddit.com/"
-    private val OAUTH_URL = "https://oauth.reddit.com/"
   }
 }

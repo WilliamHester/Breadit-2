@@ -78,7 +78,9 @@ class ApiModule {
 
   @Provides
   @Singleton
-  internal fun provideRedditApi(converter: RedditGsonConverter, factory: RedditHttpRequestFactory): RedditClient {
+  internal fun provideRedditApi(
+      converter: RedditGsonConverter,
+      factory: RedditHttpRequestFactory): RedditClient {
     return RedditClient(converter, factory)
   }
 }

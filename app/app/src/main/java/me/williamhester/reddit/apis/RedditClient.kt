@@ -13,7 +13,7 @@ class RedditClient(
     private val requestFactory: RedditHttpRequestFactory
 ) {
 
-  fun getSubmissions(place: String, query: String, after: String?) {
+  fun getSubmissions(place: String, query: String?, after: String?) {
     val queries = HashMap<String, String>()
     if (after != null) {
       queries.put("after", after)
