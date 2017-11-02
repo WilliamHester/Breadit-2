@@ -1,33 +1,65 @@
 package me.williamhester.reddit.inject
 
-import org.greenrobot.eventbus.EventBus
-
-import javax.inject.Singleton
-
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import dagger.Module
 import dagger.Provides
-import me.williamhester.reddit.html.HtmlParser
-import me.williamhester.reddit.ui.ContentClickCallbacks
-import me.williamhester.reddit.ui.ContentClickCallbacksImpl
+import me.williamhester.reddit.convert.RedditGsonConverter
+import me.williamhester.reddit.models.Edited
+import me.williamhester.reddit.models.managers.AccountManager
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import javax.inject.Singleton
 
-/** A Module for injecting an [HtmlParser] and [ContentClickCallbacksImpl].  */
+/**
+ * A Module for providing dependencies that will be reused throughout the applicaiton's lifetime.
+ */
 @Module
 class ApplicationModule {
   @Provides
   @Singleton
-  internal fun provideBus(): EventBus {
-    return EventBus()
+  internal fun provideGson(): Gson {
+    return GsonBuilder()
+        .registerTypeAdapter(Edited::class.java, Edited.TypeAdapter())
+        .create()
   }
 
   @Provides
   @Singleton
-  internal fun provideVotableCallbacks(bus: EventBus): ContentClickCallbacks {
-    return ContentClickCallbacksImpl(bus)
+  internal fun provideJsonParser(): JsonParser {
+    return JsonParser()
   }
 
   @Provides
   @Singleton
-  internal fun provideHtmlParser(callbacks: ContentClickCallbacks): HtmlParser {
-    return HtmlParser(callbacks)
+  internal fun provideOkClient(): OkHttpClient {
+    val headerInterceptor = Interceptor { chain ->
+      val original = chain.request()
+
+      // Customize the request
+      val builder = original.newBuilder()
+          .addHeader("User-Agent", "Breadit-2")
+          .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+          .method(original.method(), original.body())
+
+      chain.proceed(builder.build())
+    }
+
+    return OkHttpClient.Builder()
+        .addInterceptor(headerInterceptor)
+        .build()
+  }
+
+  @Provides
+  @Singleton
+  internal fun provideAccountManager(): AccountManager {
+    return AccountManager()
+  }
+
+  @Provides
+  @Singleton
+  internal fun provideRedditGsonConverter(gson: Gson): RedditGsonConverter {
+    return RedditGsonConverter(gson)
   }
 }

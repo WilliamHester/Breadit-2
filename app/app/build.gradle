@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath "io.realm:realm-gradle-plugin:3.1.2"
     }
 }
@@ -15,8 +15,8 @@ apply plugin: 'realm-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
 
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId "me.williamhester.reddit"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }

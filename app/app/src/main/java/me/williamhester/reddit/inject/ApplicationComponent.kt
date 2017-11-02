@@ -1,15 +1,12 @@
 package me.williamhester.reddit.inject
 
+import dagger.Component
 import javax.inject.Singleton
 
-import dagger.Component
-import me.williamhester.reddit.ui.activities.BaseActivity
-import me.williamhester.reddit.ui.fragments.BaseFragment
-
-/**   */
-@Component(modules = arrayOf(ApiModule::class, ApplicationModule::class))
+/** The Dagger component for injecting the ApiModule and ApplicationModules. */
 @Singleton
+@Component(modules = arrayOf(ApplicationModule::class))
 interface ApplicationComponent {
-  fun inject(fragment: BaseFragment)
-  fun inject(activity: BaseActivity)
+  /** Factory method for creating the ActivityComponent. */
+  fun plus(activityModule: ActivityModule) : ActivityComponent
 }
