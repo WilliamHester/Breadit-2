@@ -11,16 +11,16 @@ import me.williamhester.reddit.messages.VotableListMessage
 import me.williamhester.reddit.models.Account
 import me.williamhester.reddit.models.Submission
 import me.williamhester.reddit.models.Subreddit
-import me.williamhester.reddit.models.managers.AccountManager
 import org.greenrobot.eventbus.EventBus
 import java.util.*
+import kotlin.collections.ArrayList
 
 /** Contains methods to communicate with Reddit  */
 class RedditClient(
     private val redditGsonConverter: RedditGsonConverter,
     private val requestExecutor: RedditHttpRequestExecutor,
-    private val bus: EventBus,
-    private val accountManager: AccountManager
+    private val requestBuilderFactory: RedditHttpRequest.Builder.Factory,
+    private val bus: EventBus
 ) {
 
   fun getSubmissions(place: String, query: String?, after: String?) {
@@ -31,27 +31,26 @@ class RedditClient(
     val callback = PostingCallback {
       VotableListMessage(redditGsonConverter.toList<Submission>(it))
     }
-    val request = RedditHttpRequest.Builder(place, callback)
-        .accessToken(accountManager.accessToken)
-        .queries(queries)
-        .build()
+    val request =
+        requestBuilderFactory.create(place, callback)
+            .queries(queries)
+            .build()
     requestExecutor.createRequest(request)
   }
 
   fun getComments(permalink: String) {
     val callback = PostingCallback { PostMessage(redditGsonConverter.toPost(it)) }
     val request =
-        RedditHttpRequest.Builder(permalink, callback)
-            .accessToken(accountManager.accessToken)
+        requestBuilderFactory.create(permalink, callback)
             .build()
     requestExecutor.createRequest(request)
   }
 
   fun getMySubreddits() {
-    getMySubreddits(null)
+    getMySubreddits(null, ArrayList())
   }
 
-  private fun getMySubreddits(after: String?, subreddits: List<Subreddit> = ArrayList()) {
+  private fun getMySubreddits(after: String?, subreddits: List<Subreddit>) {
     var subredditsList = subreddits
     val innerCallback = object : RedditHttpRequestExecutor.JsonResponseCallback {
       override fun onFailure(e: Exception) {
@@ -76,17 +75,17 @@ class RedditClient(
       null
     }
 
-    val request = RedditHttpRequest.Builder("subreddits/mine", innerCallback)
-        .accessToken(accountManager.accessToken)
-        .queries(queries)
-        .build()
+    val request =
+        requestBuilderFactory.create("subreddits/mine", innerCallback)
+            .queries(queries)
+            .build()
     requestExecutor.createRequest(request)
   }
 
   fun logIn(code: String) {
     val callback = PostingCallback { redditGsonConverter.toAccessTokenJson(it) }
     val request =
-        RedditHttpRequest.Builder("api/v1/access_token", callback)
+        requestBuilderFactory.create("api/v1/access_token", callback)
             .params(mapOf(
                 "grant_type" to "authorization_code",
                 "code" to code,
@@ -102,9 +101,10 @@ class RedditClient(
       account.username = meResponse.name
       LogInFinishedMessage(account)
     }
-    val request = RedditHttpRequest.Builder("api/v1/me", callback)
-        .accessToken(account.accessToken)
-        .build()
+    val request =
+        requestBuilderFactory.create("api/v1/me", callback)
+            .accessToken(account.accessToken)
+            .build()
     requestExecutor.createRequest(request)
   }
 

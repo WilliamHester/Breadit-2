@@ -4,6 +4,7 @@ import com.google.gson.JsonParser
 import dagger.Module
 import dagger.Provides
 import me.williamhester.reddit.apis.RedditClient
+import me.williamhester.reddit.apis.RedditHttpRequest
 import me.williamhester.reddit.apis.RedditHttpRequestExecutor
 import me.williamhester.reddit.convert.RedditGsonConverter
 import me.williamhester.reddit.html.HtmlParser
@@ -40,9 +41,9 @@ class ActivityModule {
   internal fun provideRedditApi(
       converter: RedditGsonConverter,
       executor: RedditHttpRequestExecutor,
-      bus: EventBus,
-      accountManager: AccountManager): RedditClient {
-    return RedditClient(converter, executor, bus, accountManager)
+      requestFactory: RedditHttpRequest.Builder.Factory,
+      bus: EventBus): RedditClient {
+    return RedditClient(converter, executor, requestFactory, bus)
   }
 
   @Provides

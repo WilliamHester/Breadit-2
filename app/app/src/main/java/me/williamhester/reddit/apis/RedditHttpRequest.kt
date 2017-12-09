@@ -1,5 +1,7 @@
 package me.williamhester.reddit.apis
 
+import me.williamhester.reddit.models.managers.AccountManager
+
 /** A Reddit request. */
 class RedditHttpRequest private constructor(
     val path: String,
@@ -43,5 +45,10 @@ class RedditHttpRequest private constructor(
     }
 
     fun build(): RedditHttpRequest = RedditHttpRequest(this)
+
+    class Factory(val accountManager: AccountManager) {
+      fun create(path: String, callback: RedditHttpRequestExecutor.JsonResponseCallback): Builder =
+          Builder(path, callback).accessToken(accountManager.accessToken)
+    }
   }
 }
