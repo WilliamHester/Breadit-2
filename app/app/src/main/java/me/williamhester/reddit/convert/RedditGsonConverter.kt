@@ -3,32 +3,17 @@ package me.williamhester.reddit.convert
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-
-import java.util.LinkedList
-
-import me.williamhester.reddit.models.Account
-import me.williamhester.reddit.models.Comment
-import me.williamhester.reddit.models.Edited
-import me.williamhester.reddit.models.MoreComment
-import me.williamhester.reddit.models.MoreCommentJson
-import me.williamhester.reddit.models.Post
-import me.williamhester.reddit.models.Submission
-import me.williamhester.reddit.models.SubmissionJson
-import me.williamhester.reddit.models.TextComment
-import me.williamhester.reddit.models.TextCommentJson
-import me.williamhester.reddit.models.Votable
-import me.williamhester.reddit.models.VoteStatus
+import me.williamhester.reddit.models.*
+import java.util.*
 
 /** A class for converting Gson objects to Reddit objects */
 class RedditGsonConverter(private val gson: Gson) {
 
   @Throws(ConverterException::class)
-  fun <T : Votable> toList(element: JsonElement): List<T> {
-    return toList(element.asJsonObject, 0)
-  }
+  fun <T> toList(element: JsonElement): List<T> = toList(element.asJsonObject, 0)
 
   @Throws(ConverterException::class)
-  private fun <T : Votable> toList(jsonObject: JsonObject, level: Int): List<T> {
+  private fun <T> toList(jsonObject: JsonObject, level: Int = 0): List<T> {
     if (jsonObject.get("kind").asString != "Listing") {
       throw ConverterException(jsonObject, "Listing")
     }
@@ -47,7 +32,7 @@ class RedditGsonConverter(private val gson: Gson) {
         "t2" -> things.add(toAccount(obj))
         "t3" -> things.add(toSubmission(obj))
         "t4" -> {} // things.add(toMessage(jsonObject))
-        "t5" -> {} // things.add(toSubreddit(jsonObject))
+        "t5" -> things.add(toSubreddit(obj))
         "more" -> things.add(toMoreComment(obj, level))
         else -> throw ConverterException(obj, "")
       }
@@ -111,25 +96,24 @@ class RedditGsonConverter(private val gson: Gson) {
 
     val replies = data.get("replies")
     if (replies != null && replies.isJsonObject) {
-      comments.addAll(toList<Votable>(replies.asJsonObject, level + 1))
+      comments.addAll(toList(replies.asJsonObject, level + 1))
     }
 
     return comment
   }
 
-  /**
-   * Converts the [JsonObject] to a [Votable]
-   */
-  fun toVotable(`object`: JsonObject): Votable? {
-    return null
-  }
+  /** Converts the [JsonObject] to a [Votable] */
+  fun toVotable(obj: JsonObject): Votable? = null
 
-  /**
-   * Converts the [JsonObject] to a [VoteStatus]
-   */
-  fun toVoteStatus(`object`: JsonObject): VoteStatus? {
-    return null
-  }
+  /** Converts the [JsonObject] to a [VoteStatus] */
+  fun toVoteStatus(obj: JsonObject): VoteStatus? = null
+
+  fun toSubreddit(obj: JsonElement) = Subreddit(gson.fromJson(obj.asJsonObject.get("data"), SubredditJson::class.java))
+
+  fun toAccessTokenJson(obj: JsonElement): AccessTokenJson =
+      gson.fromJson(obj, AccessTokenJson::class.java)
+
+  fun toMeResponse(obj: JsonElement): MeResponse = gson.fromJson(obj, MeResponse::class.java)
 
   private fun getKind(o: JsonObject): String {
     return o.get("kind").asString

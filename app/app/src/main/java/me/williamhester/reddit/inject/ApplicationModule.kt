@@ -1,5 +1,7 @@
 package me.williamhester.reddit.inject
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -16,7 +18,8 @@ import javax.inject.Singleton
  * A Module for providing dependencies that will be reused throughout the applicaiton's lifetime.
  */
 @Module
-class ApplicationModule {
+class ApplicationModule(private val context: Context) {
+
   @Provides
   @Singleton
   internal fun provideGson(): Gson {
@@ -53,8 +56,18 @@ class ApplicationModule {
 
   @Provides
   @Singleton
-  internal fun provideAccountManager(): AccountManager {
-    return AccountManager()
+  internal fun provideContext(): Context = context
+
+  @Provides
+  @Singleton
+  internal fun provideSharedPreferences(context: Context): SharedPreferences {
+    return context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+  }
+
+  @Provides
+  @Singleton
+  internal fun provideAccountManager(sharedPreferences: SharedPreferences): AccountManager {
+    return AccountManager(sharedPreferences)
   }
 
   @Provides

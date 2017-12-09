@@ -6,9 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import butterknife.BindView
-import butterknife.ButterKnife
 import me.williamhester.reddit.R
 import me.williamhester.reddit.ui.VotableCallbacks
 import me.williamhester.reddit.ui.adapters.ContentAdapter
@@ -23,12 +21,11 @@ abstract class ContentFragment<A : ContentAdapter> : BaseFragment(), VotableCall
   protected var layoutManager: LinearLayoutManager? = null
   protected var isLoading: Boolean = false
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
-    return inflater!!.inflate(R.layout.fragment_list, container, false)
-  }
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                            savedInstanceState: Bundle?): View? =
+      inflater.inflate(R.layout.fragment_list, container, false)
 
-  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     layoutManager = LinearLayoutManager(activity)

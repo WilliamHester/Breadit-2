@@ -8,3 +8,4 @@
 /build
 /captures
 *.hprof
+gradle.properties

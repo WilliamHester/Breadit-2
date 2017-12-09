@@ -8,8 +8,9 @@ import butterknife.Unbinder
 import me.williamhester.reddit.apis.RedditClient
 import me.williamhester.reddit.html.HtmlParser
 import me.williamhester.reddit.ui.ContentClickCallbacks
-import me.williamhester.reddit.ui.activities.instanceFragmentTag
+import me.williamhester.reddit.ui.activities.INSTANCE_FRAGMENT_TAG
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
 
 /** A base fragment implementation containing most setup-related things. */
@@ -26,7 +27,7 @@ abstract class BaseFragment : Fragment() {
     super.onCreate(savedInstanceState)
 
     val instanceFragment =
-        fragmentManager.findFragmentByTag(instanceFragmentTag) as InstanceFragment
+        fragmentManager!!.findFragmentByTag(INSTANCE_FRAGMENT_TAG) as InstanceFragment
     instanceFragment.activityComponent.inject(this)
   }
 
@@ -36,7 +37,7 @@ abstract class BaseFragment : Fragment() {
     eventBus.register(this)
   }
 
-  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     unbinder = ButterKnife.bind(this, view!!)
@@ -53,5 +54,11 @@ abstract class BaseFragment : Fragment() {
 
     unbinder!!.unbind()
     unbinder = null
+  }
+
+  @Subscribe
+  fun noOp(nothing: Nothing) {
+    // Simply subscribe to "Nothing" so that if a subclass doesn't subscribe to anything, the
+    // EventBus won't crash.
   }
 }

@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
-
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-
 import me.williamhester.reddit.messages.VotableListMessage
 import me.williamhester.reddit.models.Votable
 import me.williamhester.reddit.ui.adapters.VotableAdapter
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 /** A fragment to show [Votable]s.  */
 abstract class VotableFragment : ContentFragment<VotableAdapter>() {
@@ -28,7 +25,7 @@ abstract class VotableFragment : ContentFragment<VotableAdapter>() {
     }
   }
 
-  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     recyclerView.addOnScrollListener(InfiniteLoadScrollListener())
   }

@@ -4,7 +4,7 @@ import com.google.gson.JsonParser
 import dagger.Module
 import dagger.Provides
 import me.williamhester.reddit.apis.RedditClient
-import me.williamhester.reddit.apis.RedditHttpRequestFactory
+import me.williamhester.reddit.apis.RedditHttpRequestExecutor
 import me.williamhester.reddit.convert.RedditGsonConverter
 import me.williamhester.reddit.html.HtmlParser
 import me.williamhester.reddit.models.managers.AccountManager
@@ -30,16 +30,19 @@ class ActivityModule {
       client: OkHttpClient,
       bus: EventBus,
       accountManager: AccountManager,
-      parser: JsonParser): RedditHttpRequestFactory {
-    return RedditHttpRequestFactory(client, accountManager, bus, parser)
+      parser: JsonParser,
+      redditGsonConverter: RedditGsonConverter): RedditHttpRequestExecutor {
+    return RedditHttpRequestExecutor(client, accountManager, parser, redditGsonConverter)
   }
 
   @Provides
   @ActivityScope
   internal fun provideRedditApi(
       converter: RedditGsonConverter,
-      factory: RedditHttpRequestFactory): RedditClient {
-    return RedditClient(converter, factory)
+      executor: RedditHttpRequestExecutor,
+      bus: EventBus,
+      accountManager: AccountManager): RedditClient {
+    return RedditClient(converter, executor, bus, accountManager)
   }
 
   @Provides

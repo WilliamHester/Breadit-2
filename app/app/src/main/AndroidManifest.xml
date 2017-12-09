@@ -2,6 +2,8 @@
 <manifest package="me.williamhester.reddit"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,14 +14,11 @@
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.ContentActivity">
-        </activity>
-
+        <activity android:name=".ui.activities.ContentActivity"/>
+        <activity android:name=".ui.activities.LogInActivity" android:exported="${debug}"/>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

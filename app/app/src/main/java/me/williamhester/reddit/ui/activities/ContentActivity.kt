@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.widget.FrameLayout
-
-import org.greenrobot.eventbus.Subscribe
-
 import me.williamhester.reddit.R
 import me.williamhester.reddit.messages.FailedRedditRequestMessage
 import me.williamhester.reddit.models.Submission
 import me.williamhester.reddit.ui.fragments.CommentsFragment
+import org.greenrobot.eventbus.Subscribe
 
 /** Activity that holds basic content.  */
 open class ContentActivity : BaseActivity() {
@@ -32,7 +29,7 @@ open class ContentActivity : BaseActivity() {
 
   protected open fun createContentFragment(): Fragment? {
     val args = intent.extras
-    val type = args.getString(TYPE_EXTRA) ?: return null
+    val type = args?.getString(TYPE_EXTRA) ?: return null
     when (type) {
       COMMENTS -> {
         val permalink = args.getString(PERMALINK_EXTRA)
@@ -47,7 +44,7 @@ open class ContentActivity : BaseActivity() {
   fun onRequestFailure(message: FailedRedditRequestMessage) {
     Snackbar
         .make(
-            findViewById(R.id.fragment_container) as FrameLayout,
+            findViewById(R.id.fragment_container),
             R.string.request_failed,
             BaseTransientBottomBar.LENGTH_SHORT)
         .show()

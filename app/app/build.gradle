@@ -15,7 +15,7 @@ apply plugin: 'realm-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
 
     packagingOptions {
@@ -24,9 +24,15 @@ android {
     defaultConfig {
         applicationId "me.williamhester.reddit"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        buildConfigField("String", "REDDIT_CLIENT_ID", "\"$redditClientId\"")
+        buildConfigField("String", "REDDIT_REDIRECT_URI", "\"$redditRedirectUri\"")
+
+        manifestPlaceholders = [
+                debug: true
+        ]
     }
     buildTypes {
         release {
@@ -37,7 +43,7 @@ android {
 }
 
 // The suffix for all of the dependency versions
-String COMPAT_VERSION = '25.3.1'
+String COMPAT_VERSION = '27.0.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -69,4 +75,5 @@ dependencies {
 }
 repositories {
     mavenCentral()
+    google()
 }

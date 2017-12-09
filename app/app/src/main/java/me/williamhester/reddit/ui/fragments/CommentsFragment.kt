@@ -1,22 +1,13 @@
 package me.williamhester.reddit.ui.fragments
 
 import android.os.Bundle
-import android.support.annotation.StringDef
 import android.view.LayoutInflater
-
+import me.williamhester.reddit.messages.PostMessage
+import me.williamhester.reddit.models.*
+import me.williamhester.reddit.ui.adapters.CommentsAdapter
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-
-import me.williamhester.reddit.messages.PostMessage
-import me.williamhester.reddit.models.Comment
-import me.williamhester.reddit.models.MoreComment
-import me.williamhester.reddit.models.Post
-import me.williamhester.reddit.models.Submission
-import me.williamhester.reddit.models.TextComment
-import me.williamhester.reddit.models.Votable
-import me.williamhester.reddit.ui.adapters.CommentsAdapter
+import java.util.*
 
 /** A fragment containing Comments. */
 class CommentsFragment : ContentFragment<CommentsAdapter>() {
@@ -28,8 +19,8 @@ class CommentsFragment : ContentFragment<CommentsAdapter>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    permalink = arguments.getString(PERMALINK)
-    submission = arguments.getParcelable<Submission>(SUBMISSION)
+    permalink = arguments!!.getString(PERMALINK)
+    submission = arguments!!.getParcelable<Submission>(SUBMISSION)
 
     loadContent()
   }
