@@ -8,19 +8,33 @@ class RedditHttpRequest private constructor(
     val queries: Map<String, String>?,
     val params: Map<String, String>?,
     val accessToken: String?,
-    val callback: RedditHttpRequestExecutor.JsonResponseCallback
+    val callback: RedditHttpRequestExecutor.JsonResponseCallback,
+    private val executor: RedditHttpRequestExecutor
 ) {
 
   private constructor(
       builder: Builder
-  ) : this(builder.path, builder.queries, builder.params, builder.accessToken, builder.callback)
+  ) : this(
+      builder.path,
+      builder.queries,
+      builder.params,
+      builder.accessToken,
+      builder.callback,
+      builder.executor
+  )
 
-  fun toBuilder() : Builder =
-      Builder(path, callback).params(params).accessToken(accessToken).queries(queries)
+  fun execute() {
+    executor.execute(this)
+  }
+
+  fun toBuilder(): Builder {
+    return Builder(path, callback, executor).params(params).accessToken(accessToken).queries(queries)
+  }
 
   class Builder(
       val path: String,
-      val callback: RedditHttpRequestExecutor.JsonResponseCallback
+      val callback: RedditHttpRequestExecutor.JsonResponseCallback,
+      val executor: RedditHttpRequestExecutor
   ) {
     var queries: Map<String, String>? = null
       private set
@@ -46,9 +60,13 @@ class RedditHttpRequest private constructor(
 
     fun build(): RedditHttpRequest = RedditHttpRequest(this)
 
-    class Factory(val accountManager: AccountManager) {
-      fun create(path: String, callback: RedditHttpRequestExecutor.JsonResponseCallback): Builder =
-          Builder(path, callback).accessToken(accountManager.accessToken)
+    class Factory(
+        private val accountManager: AccountManager,
+        private val requestExecutor: RedditHttpRequestExecutor
+    ) {
+      fun create(path: String, callback: RedditHttpRequestExecutor.JsonResponseCallback): Builder {
+        return Builder(path, callback, requestExecutor).accessToken(accountManager.accessToken)
+      }
     }
   }
 }

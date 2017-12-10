@@ -43,7 +43,7 @@ class ActivityModule {
       executor: RedditHttpRequestExecutor,
       requestFactory: RedditHttpRequest.Builder.Factory,
       bus: EventBus): RedditClient {
-    return RedditClient(converter, executor, requestFactory, bus)
+    return RedditClient(converter, requestFactory, bus)
   }
 
   @Provides
@@ -56,5 +56,13 @@ class ActivityModule {
   @ActivityScope
   internal fun provideHtmlParser(callbacks: ContentClickCallbacks): HtmlParser {
     return HtmlParser(callbacks)
+  }
+
+  @Provides
+  @ActivityScope
+  internal fun provideRedditHttpRequestBuilderFactory(
+      accountManager: AccountManager,
+      requestExecutor: RedditHttpRequestExecutor): RedditHttpRequest.Builder.Factory {
+    return RedditHttpRequest.Builder.Factory(accountManager, requestExecutor)
   }
 }

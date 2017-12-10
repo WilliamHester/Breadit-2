@@ -41,7 +41,7 @@ class RedditHttpRequestExecutor(
     return builder.build()
   }
 
-  fun createRequest(request: RedditHttpRequest, hasAttemptedRefresh: Boolean = false) {
+  internal fun execute(request: RedditHttpRequest, hasAttemptedRefresh: Boolean = false) {
     val urlBuilder = HttpUrl.parse(getBaseUrl(request.accessToken))
         .newBuilder()
         .addPathSegments(request.path)
@@ -129,7 +129,7 @@ class RedditHttpRequestExecutor(
         // TODO: Refresh the token
         Log.d("RedditRequestFactory", "Requesting new access token")
         refreshToken()
-        createRequest(request.toBuilder().accessToken(accountManager.accessToken).build(), true)
+        execute(request.toBuilder().accessToken(accountManager.accessToken).build(), true)
       } else {
         try {
           Log.i("RedditHttpRequestFac", "Got response")

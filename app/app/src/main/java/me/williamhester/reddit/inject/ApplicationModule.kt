@@ -7,7 +7,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import dagger.Module
 import dagger.Provides
-import me.williamhester.reddit.apis.RedditHttpRequest
 import me.williamhester.reddit.convert.RedditGsonConverter
 import me.williamhester.reddit.models.Edited
 import me.williamhester.reddit.models.managers.AccountManager
@@ -76,9 +75,4 @@ class ApplicationModule(private val context: Context) {
   internal fun provideRedditGsonConverter(gson: Gson): RedditGsonConverter {
     return RedditGsonConverter(gson)
   }
-
-  @Provides
-  @Singleton
-  internal fun provideRedditHttpRequestBuilderFactory(accountManager: AccountManager) =
-      RedditHttpRequest.Builder.Factory(accountManager)
 }

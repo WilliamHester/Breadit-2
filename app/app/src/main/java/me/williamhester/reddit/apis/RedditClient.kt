@@ -18,7 +18,6 @@ import kotlin.collections.ArrayList
 /** Contains methods to communicate with Reddit  */
 class RedditClient(
     private val redditGsonConverter: RedditGsonConverter,
-    private val requestExecutor: RedditHttpRequestExecutor,
     private val requestBuilderFactory: RedditHttpRequest.Builder.Factory,
     private val bus: EventBus
 ) {
@@ -31,19 +30,17 @@ class RedditClient(
     val callback = PostingCallback {
       VotableListMessage(redditGsonConverter.toList<Submission>(it))
     }
-    val request =
-        requestBuilderFactory.create(place, callback)
-            .queries(queries)
-            .build()
-    requestExecutor.createRequest(request)
+    requestBuilderFactory.create(place, callback)
+        .queries(queries)
+        .build()
+        .execute()
   }
 
   fun getComments(permalink: String) {
     val callback = PostingCallback { PostMessage(redditGsonConverter.toPost(it)) }
-    val request =
-        requestBuilderFactory.create(permalink, callback)
-            .build()
-    requestExecutor.createRequest(request)
+    requestBuilderFactory.create(permalink, callback)
+        .build()
+        .execute()
   }
 
   fun getMySubreddits() {
@@ -75,24 +72,21 @@ class RedditClient(
       null
     }
 
-    val request =
-        requestBuilderFactory.create("subreddits/mine", innerCallback)
-            .queries(queries)
-            .build()
-    requestExecutor.createRequest(request)
+    requestBuilderFactory.create("subreddits/mine", innerCallback)
+        .queries(queries)
+        .build()
+        .execute()
   }
 
   fun logIn(code: String) {
     val callback = PostingCallback { redditGsonConverter.toAccessTokenJson(it) }
-    val request =
-        requestBuilderFactory.create("api/v1/access_token", callback)
-            .params(mapOf(
-                "grant_type" to "authorization_code",
-                "code" to code,
-                "redirect_uri" to BuildConfig.REDDIT_REDIRECT_URI))
-            .build()
-
-    requestExecutor.createRequest(request)
+    requestBuilderFactory.create("api/v1/access_token", callback)
+        .params(mapOf(
+            "grant_type" to "authorization_code",
+            "code" to code,
+            "redirect_uri" to BuildConfig.REDDIT_REDIRECT_URI))
+        .build()
+        .execute()
   }
 
   fun getMe(account: Account) {
@@ -101,11 +95,10 @@ class RedditClient(
       account.username = meResponse.name
       LogInFinishedMessage(account)
     }
-    val request =
-        requestBuilderFactory.create("api/v1/me", callback)
-            .accessToken(account.accessToken)
-            .build()
-    requestExecutor.createRequest(request)
+    requestBuilderFactory.create("api/v1/me", callback)
+        .accessToken(account.accessToken)
+        .build()
+        .execute()
   }
 
   private inner class PostingCallback(
