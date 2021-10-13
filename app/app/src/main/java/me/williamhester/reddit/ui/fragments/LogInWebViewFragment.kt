@@ -52,7 +52,7 @@ class LogInWebViewFragment : BaseFragment() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
       if (request?.url?.scheme == "breadit") {
         val activity = this@LogInWebViewFragment.context as LogInActivity
-        activity.startLogIn(request.url.getQueryParameter("code"))
+        activity.startLogIn(request.url.getQueryParameter("code")!!)
         return true
       }
       return false

@@ -102,7 +102,7 @@ class RedditHttpRequestExecutor(
             it
                 .where(Account::class.java)
                 .equalTo("username", accountManager.username)
-                .findFirst()
+                .findFirst()!!
         account.accessToken = accessTokenJson.accessToken
         accountManager.setAccount(account)
       }

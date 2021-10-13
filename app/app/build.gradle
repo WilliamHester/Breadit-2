@@ -1,34 +1,37 @@
 buildscript {
+    ext.kotlin_version = '1.5.21'
+    ext.realm_version = '10.8.0'
     repositories {
         mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath "io.realm:realm-gradle-plugin:3.1.2"
+//        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath "io.realm:realm-gradle-plugin:10.8.0"
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'realm-android'
 apply plugin: 'kotlin-kapt'
+//apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    compileSdk 30
 
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
     defaultConfig {
         applicationId "me.williamhester.reddit"
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdk 28
+        targetSdk 30
         versionCode 1
         versionName "1.0"
-        buildConfigField("String", "REDDIT_CLIENT_ID", "\"$redditClientId\"")
-        buildConfigField("String", "REDDIT_REDIRECT_URI", "\"$redditRedirectUri\"")
+        // TODO: put real client ID
+        buildConfigField("String", "REDDIT_CLIENT_ID", "\"asd\"")
+        // TODO: put real redirect URI
+        buildConfigField("String", "REDDIT_REDIRECT_URI", "\"asdf\"")
 
         manifestPlaceholders = [
                 debug: true
@@ -40,39 +43,53 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 // The suffix for all of the dependency versions
-String COMPAT_VERSION = '27.0.1'
+var COMPAT_VERSION = '27.0.1'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 
-    compile 'com.android.support:appcompat-v7:' + COMPAT_VERSION
-    compile 'com.android.support:customtabs:' + COMPAT_VERSION
-    compile 'com.android.support:cardview-v7:' + COMPAT_VERSION
-    compile 'com.android.support:recyclerview-v7:' + COMPAT_VERSION
-    compile 'com.android.support:design:' + COMPAT_VERSION
+    api "io.realm:realm-android-library:$realm_version"
 
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    implementation 'com.android.support:appcompat-v7:' + COMPAT_VERSION
+    implementation 'com.android.support:customtabs:' + COMPAT_VERSION
+    implementation 'com.android.support:cardview-v7:' + COMPAT_VERSION
+    implementation 'com.android.support:recyclerview-v7:' + COMPAT_VERSION
+    implementation 'com.android.support:design:' + COMPAT_VERSION
 
-    compile 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
-    compile 'com.jakewharton:butterknife:8.0.1'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    implementation 'com.jakewharton:butterknife:8.0.1'
     kapt 'com.jakewharton:butterknife-compiler:8.0.1'
 
-    compile 'org.jsoup:jsoup:1.9.2'
-    compile 'com.google.code.gson:gson:2.8.0'
+    implementation 'org.jsoup:jsoup:1.9.2'
+    implementation 'com.google.code.gson:gson:2.8.0'
 
     // Dependency Injection
-    compile 'com.google.dagger:dagger:2.2'
+    implementation 'com.google.dagger:dagger:2.2'
     kapt 'com.google.dagger:dagger-compiler:2.2'
-    provided 'javax.annotation:jsr250-api:1.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+//realm {
+//    syncEnabled = true
+//}
+
 repositories {
     mavenCentral()
     google()

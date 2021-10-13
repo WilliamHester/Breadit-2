@@ -32,8 +32,8 @@ open class ContentActivity : BaseActivity() {
     val type = args?.getString(TYPE_EXTRA) ?: return null
     when (type) {
       COMMENTS -> {
-        val permalink = args.getString(PERMALINK_EXTRA)
-        val s = args.getParcelable<Submission>(VOTABLE_EXTRA)
+        val permalink = args.getString(PERMALINK_EXTRA)!!
+        val s = args.getParcelable<Submission>(VOTABLE_EXTRA)!!
         return CommentsFragment.newInstance(permalink, s)
       }
       else -> return null
