@@ -4,11 +4,9 @@ import android.os.Parcel;
 
 import java.util.ArrayList;
 
-import static me.williamhester.reddit.util.Util.unescapeHtml;
+import static me.williamhester.reddit.util.UtilKt.unescapeHtml;
 
-/**
- * Created by william on 6/16/16.
- */
+/** A regular Reddit comment. */
 public class TextComment extends Comment {
 
   private String subredditId;

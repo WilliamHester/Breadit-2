@@ -1,6 +1,7 @@
 *.iml
 .gradle
 /local.properties
+.idea/**/*
 /.idea/workspace.xml
 /.idea/libraries
 .idea/**/*
@@ -8,3 +9,4 @@
 /build
 /captures
 *.hprof
+gradle.properties

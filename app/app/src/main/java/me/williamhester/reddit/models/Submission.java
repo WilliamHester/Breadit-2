@@ -2,7 +2,7 @@ package me.williamhester.reddit.models;
 
 import android.os.Parcel;
 
-import static me.williamhester.reddit.util.Util.unescapeHtml;
+import static me.williamhester.reddit.util.UtilKt.unescapeHtml;
 
 /** The model class that holds Submission data. */
 public class Submission extends Votable {
