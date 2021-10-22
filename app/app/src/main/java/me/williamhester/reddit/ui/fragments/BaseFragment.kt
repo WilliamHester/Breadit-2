@@ -1,7 +1,7 @@
 package me.williamhester.reddit.ui.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -27,7 +27,7 @@ abstract class BaseFragment : Fragment() {
     super.onCreate(savedInstanceState)
 
     val instanceFragment =
-        fragmentManager!!.findFragmentByTag(INSTANCE_FRAGMENT_TAG) as InstanceFragment
+        parentFragmentManager.findFragmentByTag(INSTANCE_FRAGMENT_TAG) as InstanceFragment
     instanceFragment.activityComponent.inject(this)
   }
 
@@ -40,7 +40,7 @@ abstract class BaseFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    unbinder = ButterKnife.bind(this, view!!)
+    unbinder = ButterKnife.bind(this, requireView())
   }
 
   override fun onStop() {

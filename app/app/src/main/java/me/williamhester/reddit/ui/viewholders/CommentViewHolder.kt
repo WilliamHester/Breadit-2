@@ -1,6 +1,6 @@
 package me.williamhester.reddit.ui.viewholders
 
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 
 import me.williamhester.reddit.R

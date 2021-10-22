@@ -1,7 +1,7 @@
 package me.williamhester.reddit.ui.fragments
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import me.williamhester.reddit.messages.VotableListMessage
@@ -64,7 +64,7 @@ abstract class VotableFragment : ContentFragment<VotableAdapter>() {
     }
 
   private inner class InfiniteLoadScrollListener : RecyclerView.OnScrollListener() {
-    override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
       // There's no way layoutManager can be null here.
       val position = layoutManager!!.findLastVisibleItemPosition()
       if (canLoad && position > votables.size - 5) {

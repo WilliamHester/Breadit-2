@@ -1,7 +1,6 @@
 package me.williamhester.reddit.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 
 import me.williamhester.reddit.R
@@ -29,18 +28,17 @@ class CommentsAdapter(
     private val comments: List<Comment>
 ) : ContentAdapter(inflater, htmlParser, contentClickCallbacks, clickListener) {
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<*>?{
-    val v: View
-    when (viewType) {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<*> {
+    return when (viewType) {
       MORE_COMMENTS -> {
-        v = layoutInflater.inflate(R.layout.row_more_comment, parent, false)
-        return MoreCommentsViewHolder(v, clickListener.get()!!)
+        val v = layoutInflater.inflate(R.layout.row_more_comment, parent, false)
+        MoreCommentsViewHolder(v, clickListener.get()!!)
       }
       SUBMISSION_SELF -> {
-        v = layoutInflater.inflate(R.layout.row_submission_self, parent, false)
-        return SubmissionSelfTextViewHolder(v, clickListener.get()!!, htmlParser)
+        val v = layoutInflater.inflate(R.layout.row_submission_self, parent, false)
+        SubmissionSelfTextViewHolder(v, clickListener.get()!!, htmlParser)
       }
-      else -> return super.onCreateViewHolder(parent, viewType)
+      else -> super.onCreateViewHolder(parent, viewType)
     }
   }
 
@@ -64,10 +62,10 @@ class CommentsAdapter(
 
   override fun getItemViewType(position: Int): Int {
     if (position == 0 && submission != null) {
-      if (!submission!!.selftextHtml.isEmpty()) {
-        return SUBMISSION_SELF
+      return if (!submission!!.selftextHtml.isEmpty()) {
+        SUBMISSION_SELF
       } else {
-        return super.getItemViewType(position)
+        super.getItemViewType(position)
       }
     }
     if (getItemForPosition(position) is MoreComment) {
@@ -88,7 +86,7 @@ class CommentsAdapter(
   }
 
   companion object {
-    private val SUBMISSION_SELF = 4
-    private val MORE_COMMENTS = 11
+    private const val SUBMISSION_SELF = 4
+    private const val MORE_COMMENTS = 11
   }
 }

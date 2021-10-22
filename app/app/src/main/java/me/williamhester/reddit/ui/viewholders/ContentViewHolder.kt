@@ -1,6 +1,6 @@
 package me.williamhester.reddit.ui.viewholders
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 /** A base class for a [RecyclerView.ViewHolder] that holds some content of type T. */

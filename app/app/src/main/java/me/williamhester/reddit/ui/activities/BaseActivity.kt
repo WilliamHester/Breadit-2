@@ -1,7 +1,7 @@
 package me.williamhester.reddit.ui.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import me.williamhester.reddit.BreaditApplication
 import me.williamhester.reddit.apis.RedditClient
 import me.williamhester.reddit.inject.ActivityModule

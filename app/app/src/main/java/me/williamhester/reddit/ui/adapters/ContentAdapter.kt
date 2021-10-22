@@ -1,6 +1,6 @@
 package me.williamhester.reddit.ui.adapters
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +32,7 @@ abstract class ContentAdapter internal constructor(
   protected val clickListener: WeakReference<VotableCallbacks> =
       WeakReference(clickListener)
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<*>? {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<*> {
     val v: View
     when (viewType) {
       SUBMISSION_LINK -> {
@@ -51,7 +51,7 @@ abstract class ContentAdapter internal constructor(
         v = layoutInflater.inflate(R.layout.row_comment, parent, false)
         return TextCommentViewHolder(v, htmlParser, clickListener.get()!!)
       }
-      else -> return null
+      else -> throw UnsupportedViewTypeException()
     }
   }
 
@@ -89,6 +89,8 @@ abstract class ContentAdapter internal constructor(
   }
 
   abstract fun getItemForPosition(position: Int): Any
+
+  class UnsupportedViewTypeException : Exception()
 
   companion object {
     private val SUBMISSION = 1

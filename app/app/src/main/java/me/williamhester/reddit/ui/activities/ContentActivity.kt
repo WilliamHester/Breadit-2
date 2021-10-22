@@ -1,9 +1,9 @@
 package me.williamhester.reddit.ui.activities
 
 import android.os.Bundle
-import android.support.design.widget.BaseTransientBottomBar
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import me.williamhester.reddit.R
 import me.williamhester.reddit.messages.FailedRedditRequestMessage
 import me.williamhester.reddit.models.Submission
@@ -19,7 +19,7 @@ open class ContentActivity : BaseActivity() {
     val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
     if (f == null) {
       supportFragmentManager.beginTransaction()
-          .add(R.id.fragment_container, createContentFragment())
+          .add(R.id.fragment_container, createContentFragment()!!)
           .commit()
     }
   }
@@ -30,13 +30,13 @@ open class ContentActivity : BaseActivity() {
   protected open fun createContentFragment(): Fragment? {
     val args = intent.extras
     val type = args?.getString(TYPE_EXTRA) ?: return null
-    when (type) {
+    return when (type) {
       COMMENTS -> {
         val permalink = args.getString(PERMALINK_EXTRA)!!
         val s = args.getParcelable<Submission>(VOTABLE_EXTRA)!!
-        return CommentsFragment.newInstance(permalink, s)
+        CommentsFragment.newInstance(permalink, s)
       }
-      else -> return null
+      else -> null
     }
   }
 
@@ -51,11 +51,9 @@ open class ContentActivity : BaseActivity() {
   }
 
   companion object {
-
-    val TYPE_EXTRA = "type"
-    val VOTABLE_EXTRA = "votable"
-    val PERMALINK_EXTRA = "permalink"
-
-    val COMMENTS = "comments"
+    const val TYPE_EXTRA = "type"
+    const val VOTABLE_EXTRA = "votable"
+    const val PERMALINK_EXTRA = "permalink"
+    const val COMMENTS = "comments"
   }
 }

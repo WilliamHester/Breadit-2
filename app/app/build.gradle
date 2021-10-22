@@ -48,20 +48,18 @@ android {
     }
 }
 
-// The suffix for all of the dependency versions
-var COMPAT_VERSION = '27.0.1'
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.13.2'
 
     api "io.realm:realm-android-library:$realm_version"
 
-    implementation 'com.android.support:appcompat-v7:' + COMPAT_VERSION
-    implementation 'com.android.support:customtabs:' + COMPAT_VERSION
-    implementation 'com.android.support:cardview-v7:' + COMPAT_VERSION
-    implementation 'com.android.support:recyclerview-v7:' + COMPAT_VERSION
-    implementation 'com.android.support:design:' + COMPAT_VERSION
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.browser:browser:1.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+//    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
 
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
