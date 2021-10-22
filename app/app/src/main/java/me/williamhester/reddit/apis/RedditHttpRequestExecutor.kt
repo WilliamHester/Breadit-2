@@ -20,20 +20,14 @@ class RedditHttpRequestExecutor(
     private val redditGsonConverter: RedditGsonConverter
 ) {
 
-  private val POST = "POST"
-  private val GET = "GET"
-  private val API_URL = "https://api.reddit.com/"
-  private val OAUTH_URL = "https://oauth.reddit.com/"
-
   private fun getBaseUrl(accessToken: String?): String {
-    Log.d("RedditRequestFactory", "Went here")
     return if (accessToken != null) OAUTH_URL else API_URL
   }
 
   private fun getHeaders(accessToken: String?): Headers {
     val builder = Headers.Builder()
     if (accessToken != null) {
-      builder.add("Authorization", "bearer " + accessToken)
+      builder.add("Authorization", "bearer $accessToken")
     } else {
       val encoded = Base64.encodeToString("${BuildConfig.REDDIT_CLIENT_ID}:".toByteArray(), 0).trim()
       builder.add("Authorization", "Basic $encoded")
@@ -42,15 +36,14 @@ class RedditHttpRequestExecutor(
   }
 
   internal fun execute(request: RedditHttpRequest, hasAttemptedRefresh: Boolean = false) {
-    val urlBuilder = HttpUrl.parse(getBaseUrl(request.accessToken))
+    val urlBuilder = HttpUrl.parse(getBaseUrl(request.accessToken))!!
         .newBuilder()
         .addPathSegments(request.path)
 
     request.queries?.forEach { urlBuilder.addQueryParameter(it.key, it.value) }
 
     val method = if (request.params != null) POST else GET
-    val requestBody: RequestBody?
-    requestBody =
+    val requestBody: RequestBody? =
         if (method != GET) {
           val requestBodyBuilder = FormBody.Builder()
           request.params?.forEach { requestBodyBuilder.add(it.key, it.value) }
@@ -71,7 +64,7 @@ class RedditHttpRequestExecutor(
   }
 
   private fun refreshToken() {
-    val urlBuilder = HttpUrl.parse(getBaseUrl(null))
+    val urlBuilder = HttpUrl.parse(getBaseUrl(null))!!
         .newBuilder()
         .addPathSegments("api/v1/access_token")
 
@@ -96,7 +89,7 @@ class RedditHttpRequestExecutor(
     if (response.isSuccessful) {
       Log.d("RedditRequestFactory", "Got a new access token!")
       val accessTokenJson =
-          redditGsonConverter.toAccessTokenJson(jsonParser.parse(response.body().charStream()))
+          redditGsonConverter.toAccessTokenJson(jsonParser.parse(response.body()!!.charStream()))
       Realm.getDefaultInstance().executeTransaction {
         val account =
             it
@@ -133,7 +126,7 @@ class RedditHttpRequestExecutor(
       } else {
         try {
           Log.i("RedditHttpRequestFac", "Got response")
-          val element = jsonParser.parse(response.body().charStream())
+          val element = jsonParser.parse(response.body()!!.charStream())
           request.callback.onResponse(element)
         } catch (e: Exception) {
           Log.d("RedditClient", "Request failed", e)
@@ -147,5 +140,12 @@ class RedditHttpRequestExecutor(
   interface JsonResponseCallback {
     fun onFailure(e: Exception)
     fun onResponse(element: JsonElement)
+  }
+
+  companion object {
+    private const val POST = "POST"
+    private const val GET = "GET"
+    private const val API_URL = "https://api.reddit.com/"
+    private const val OAUTH_URL = "https://oauth.reddit.com/"
   }
 }

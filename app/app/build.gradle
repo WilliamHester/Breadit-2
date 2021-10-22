@@ -1,12 +1,10 @@
 buildscript {
-    ext.kotlin_version = '1.5.21'
+    ext.kotlin_version = '1.5.31'
     ext.realm_version = '10.8.0'
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
-//        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "io.realm:realm-gradle-plugin:10.8.0"
     }
 }
@@ -14,7 +12,6 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-//apply plugin: 'realm-android'
 
 android {
     compileSdk 30
@@ -34,7 +31,7 @@ android {
         buildConfigField("String", "REDDIT_REDIRECT_URI", "\"asdf\"")
 
         manifestPlaceholders = [
-                debug: true
+            debug: true
         ]
     }
     buildTypes {
@@ -57,7 +54,7 @@ var COMPAT_VERSION = '27.0.1'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
     api "io.realm:realm-android-library:$realm_version"
 
@@ -67,7 +64,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:' + COMPAT_VERSION
     implementation 'com.android.support:design:' + COMPAT_VERSION
 
-    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     implementation 'org.greenrobot:eventbus:3.0.0'
 
@@ -77,18 +74,14 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:8.0.1'
 
     implementation 'org.jsoup:jsoup:1.9.2'
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Dependency Injection
-    implementation 'com.google.dagger:dagger:2.2'
-    kapt 'com.google.dagger:dagger-compiler:2.2'
+    implementation 'com.google.dagger:dagger:2.39.1'
+    kapt 'com.google.dagger:dagger-compiler:2.39.1'
     compileOnly 'javax.annotation:jsr250-api:1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-//realm {
-//    syncEnabled = true
-//}
 
 repositories {
     mavenCentral()
