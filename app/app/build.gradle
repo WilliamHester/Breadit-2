@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 
 android {
     compileSdk 30
@@ -25,10 +26,8 @@ android {
         targetSdk 30
         versionCode 1
         versionName "1.0"
-        // TODO: put real client ID
-        buildConfigField("String", "REDDIT_CLIENT_ID", "\"asd\"")
-        // TODO: put real redirect URI
-        buildConfigField("String", "REDDIT_REDIRECT_URI", "\"asdf\"")
+        buildConfigField("String", "REDDIT_CLIENT_ID", RedditAPIKey)
+        buildConfigField("String", "REDDIT_REDIRECT_URI", RedditRedirectURI)
 
         manifestPlaceholders = [
             debug: true

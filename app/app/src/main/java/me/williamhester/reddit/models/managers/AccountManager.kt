@@ -1,6 +1,7 @@
 package me.williamhester.reddit.models.managers
 
 import android.content.SharedPreferences
+import android.util.Log
 import io.realm.Realm
 import me.williamhester.reddit.models.Account
 
@@ -32,11 +33,14 @@ class AccountManager(private val sharedPreferences: SharedPreferences) {
   init {
     val activeUser = sharedPreferences.getString("activeUser", null)
     if (activeUser != null) {
+      Log.d("AccountManager", "Logged in as $activeUser")
       setAccount(
           Realm.getDefaultInstance()
               .where(Account::class.java)
               .equalTo("username", activeUser)
               .findFirst())
+    } else {
+      Log.d("AccountManager", "Not logged in")
     }
   }
 }

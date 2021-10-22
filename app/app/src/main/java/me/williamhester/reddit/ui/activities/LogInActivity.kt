@@ -14,8 +14,7 @@ import org.greenrobot.eventbus.Subscribe
 /** Activity responsible for handing user log in and returning them to the app, logged in. */
 class LogInActivity : BaseActivity() {
 
-  override val layoutId: Int
-    get() = R.layout.activity_content
+  override val layoutId = R.layout.activity_content
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

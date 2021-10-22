@@ -11,5 +11,5 @@ class MainActivity : ContentActivity() {
   override val layoutId: Int
     get() = R.layout.activity_main
 
-  override fun createContentFragment(): Fragment? = SubmissionFragment.newInstance()
+  override fun createContentFragment(): Fragment = SubmissionFragment.newInstance()
 }

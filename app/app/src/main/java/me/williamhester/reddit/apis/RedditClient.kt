@@ -25,7 +25,7 @@ class RedditClient(
   fun getSubmissions(place: String, query: String?, after: String?) {
     val queries = HashMap<String, String>()
     if (after != null) {
-      queries.put("after", after)
+      queries["after"] = after
     }
     val callback = PostingCallback {
       VotableListMessage(redditGsonConverter.toList<Submission>(it))
