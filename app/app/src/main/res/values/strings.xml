@@ -20,4 +20,10 @@
     <!-- ContentActivity -->
     <string name="request_failed">Request failed</string>
 
+    <!-- Bottom bar menu actions -->
+    <string name="subreddit_list_menu_item">Subreddit List</string>
+    <string name="home_menu_item">Home</string>
+    <string name="user_menu_item">User</string>
+    <string name="search_menu_item">Search</string>
+
 </resources>

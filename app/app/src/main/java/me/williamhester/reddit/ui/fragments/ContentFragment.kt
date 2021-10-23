@@ -14,7 +14,6 @@ import me.williamhester.reddit.ui.adapters.ContentAdapter
 /** The base fragment for holding a list of items.  */
 abstract class ContentFragment<A : ContentAdapter> : BaseFragment(), VotableCallbacks {
 
-  @BindView(R.id.recycler_view)
   lateinit var recyclerView: RecyclerView
 
   protected lateinit var adapter: A
@@ -27,6 +26,8 @@ abstract class ContentFragment<A : ContentAdapter> : BaseFragment(), VotableCall
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    recyclerView = view.findViewById(R.id.recycler_view)
 
     layoutManager = LinearLayoutManager(activity)
     recyclerView.layoutManager = layoutManager

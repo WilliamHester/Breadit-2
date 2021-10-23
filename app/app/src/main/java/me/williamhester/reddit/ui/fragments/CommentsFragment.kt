@@ -19,8 +19,8 @@ class CommentsFragment : ContentFragment<CommentsAdapter>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    permalink = arguments!!.getString(PERMALINK)
-    submission = arguments!!.getParcelable<Submission>(SUBMISSION)
+    permalink = requireArguments().getString(PERMALINK)
+    submission = requireArguments().getParcelable(SUBMISSION)
 
     loadContent()
   }

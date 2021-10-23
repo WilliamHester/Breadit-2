@@ -22,7 +22,6 @@ class LogInWebViewFragment : BaseFragment() {
     fun newInstance() = LogInWebViewFragment()
   }
 
-  @BindView(R.id.webview)
   lateinit var webView: WebView
 
   override fun onCreateView(
@@ -33,6 +32,8 @@ class LogInWebViewFragment : BaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    webView = view.findViewById(R.id.webview)
 
     val state = "testing"
     val url = "https://www.reddit.com/api/v1/authorize.compact" +
