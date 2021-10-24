@@ -1,17 +1,13 @@
 package me.williamhester.reddit.ui.viewholders
 
-import android.content.res.Resources
 import android.view.View
 import android.widget.TextView
 
 import me.williamhester.reddit.R
-import me.williamhester.reddit.html.HtmlParseResult
 import me.williamhester.reddit.models.TextComment
 import me.williamhester.reddit.html.HtmlParser
 import me.williamhester.reddit.ui.VotableCallbacks
 import me.williamhester.reddit.ui.text.VotableMovementMethod
-
-import butterknife.ButterKnife.findById
 
 /**
  * Holds a comment that contains text and perform
@@ -22,15 +18,14 @@ class TextCommentViewHolder(
     clickListener: VotableCallbacks
 ) : CommentViewHolder<TextComment>(itemView, clickListener) {
 
-  private val author: TextView = findById(itemView, R.id.author)
-  private val flair: TextView = findById(itemView, R.id.flair)
-  private val metadata: TextView = findById(itemView, R.id.metadata)
-  private val body: TextView = findById(itemView, R.id.body)
-  override val levelIndicator: View = findById<View>(itemView, R.id.level_indicator)
-  private val linkMovementMethod: VotableMovementMethod
+  private val author: TextView = itemView.findViewById(R.id.author)
+  private val flair: TextView = itemView.findViewById(R.id.flair)
+  private val metadata: TextView = itemView.findViewById(R.id.metadata)
+  private val body: TextView = itemView.findViewById(R.id.body)
+  override val levelIndicator: View = itemView.findViewById(R.id.level_indicator)
+  private val linkMovementMethod = VotableMovementMethod(clickListener)
 
   init {
-    linkMovementMethod = VotableMovementMethod(clickListener)
     body.movementMethod = linkMovementMethod
   }
 

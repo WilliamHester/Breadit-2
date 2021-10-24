@@ -6,19 +6,17 @@ import me.williamhester.reddit.R
 import me.williamhester.reddit.models.Submission
 import me.williamhester.reddit.ui.VotableCallbacks
 
-import butterknife.ButterKnife.findById
-
 /** A ViewHolder for a Submission object */
 open class SubmissionViewHolder(
     itemView: View,
     clickListener: VotableCallbacks
 ) : ContentViewHolder<Submission>(itemView) {
 
-  private val pointsTextView: TextView = findById(itemView, R.id.points)
-  private val nsfwTextView: TextView = findById(itemView, R.id.nsfw)
-  private val titleTextView: TextView = findById(itemView, R.id.title)
-  private val metadata1TextView: TextView = findById(itemView, R.id.metadata_1)
-  private val metadata2TextView: TextView = findById(itemView, R.id.metadata_2)
+  private val pointsTextView: TextView = itemView.findViewById(R.id.points)
+  private val nsfwTextView: TextView = itemView.findViewById(R.id.nsfw)
+  private val titleTextView: TextView = itemView.findViewById(R.id.title)
+  private val metadata1TextView: TextView = itemView.findViewById(R.id.metadata_1)
+  private val metadata2TextView: TextView = itemView.findViewById(R.id.metadata_2)
 
   private var submission: Submission? = null
 

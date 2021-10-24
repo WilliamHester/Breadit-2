@@ -3,7 +3,6 @@ package me.williamhester.reddit.ui.viewholders
 import android.view.View
 import android.widget.TextView
 
-import butterknife.ButterKnife
 import me.williamhester.reddit.R
 import me.williamhester.reddit.models.Submission
 import me.williamhester.reddit.ui.VotableCallbacks
@@ -14,7 +13,7 @@ class SubmissionLinkViewHolder(
     clickListener: VotableCallbacks
 ) : SubmissionViewHolder(itemView, clickListener) {
 
-  private val linkText: TextView = ButterKnife.findById<TextView>(itemView, R.id.link_text)
+  private val linkText: TextView = itemView.findViewById(R.id.link_text)
 
   init {
     linkText.setOnClickListener {

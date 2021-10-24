@@ -5,6 +5,8 @@
 
     <TextView android:id="@+id/subreddit_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:padding="12dp"/>
 
 </LinearLayout>

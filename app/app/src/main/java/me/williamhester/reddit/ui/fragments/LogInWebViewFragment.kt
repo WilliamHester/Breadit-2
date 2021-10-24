@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import butterknife.BindView
 import me.williamhester.reddit.BuildConfig
 import me.williamhester.reddit.R
 import me.williamhester.reddit.ui.activities.LogInActivity

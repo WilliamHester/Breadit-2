@@ -5,7 +5,6 @@ import android.widget.ImageView
 
 import com.bumptech.glide.Glide
 
-import butterknife.ButterKnife
 import me.williamhester.reddit.R
 import me.williamhester.reddit.models.Link
 import me.williamhester.reddit.models.Submission
@@ -19,7 +18,7 @@ class SubmissionImageViewHolder(
     clickListener: VotableCallbacks
 ) : SubmissionViewHolder(itemView, clickListener) {
 
-  private val imageView: ImageView = ButterKnife.findById<ImageView>(itemView, R.id.image)
+  private val imageView: ImageView = itemView.findViewById(R.id.image)
 
   init {
     imageView.setOnClickListener(View.OnClickListener {

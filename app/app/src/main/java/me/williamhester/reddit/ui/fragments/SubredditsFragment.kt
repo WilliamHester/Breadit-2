@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import me.williamhester.reddit.R
 import me.williamhester.reddit.models.Subreddit
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class SubredditsFragment : BaseFragment() {
 
@@ -38,7 +39,7 @@ class SubredditsFragment : BaseFragment() {
   }
 
   @SuppressLint("NotifyDataSetChanged") // TODO: Update the data set in a granular fashion
-  @Subscribe
+  @Subscribe(threadMode = ThreadMode.MAIN)
   fun onSubredditsLoaded(list: List<Subreddit>) {
     subreddits.clear()
     subreddits.addAll(list)
